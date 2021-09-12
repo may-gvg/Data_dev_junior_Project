@@ -74,7 +74,13 @@ np.random.rand(5)
 
 <p>Matrix może mieć&nbsp;rozmaite typy, ale : wszystkie elementy muszą być takie same.</p>
 <p>Zbi&oacute;r jednakowo długich wektor&oacute;w to macierz. Tworzymy je w Pythonie jako złożenie list.</p>
-<pre><code>numpy_matrix = np.array([[1,2,3], [5,7,11]])</code><code>numpy_matrix.shape</code><code>&gt;&gt; (2, 3)</code></pre>
+
+<pre><code class="language-py">
+numpy_matrix = np.array([[1,2,3], [5,7,11]])
+numpy_matrix.shape\
+>> (2, 3)
+</code></pre>
+
 
 <h3><strong>Operacje na tablicach</strong></h3>
 <p>W NumPy, możemy wykonywać wszystkie podstawowe operacje matematyczne, takie jak dodawanie, odejmowanie, mnożenie itd.</p>
@@ -239,11 +245,92 @@ matrix1[0, :]
 matrix1[:, -1]
 >> array([3, 6, 9])
 </code></pre>
-<h3><strong>dot/matmul/mul   + zmiana rozmiarów tablicy </strong></h3>
-?
-<h3><strong> zmiana rozmiarów tablicy </strong></h3>
 
-                                <p></p>
+                                <h3><strong> Zmiana rozmiarów tablicy </strong></h3>
+
+
+<p><b>shape</b> - kształt</p>
+<p>Narzędzie kształtu daje krotkę wymiar&oacute;w szyku i może być używane do zmiany wymiar&oacute;w szyku.</p>
+
+<p>(a). <span lang="pl-PL">Używanie shape do uzyskania wymiar&oacute;w tablicy</span></p>
+
+<pre><code class="language-py">
+my__1D_array = numpy.array([1, 2, 3, 4, 5])
+print (my_1D_array.shape)
+#(5,) -> 1 row and 5 columns
+
+my__2D_array = numpy.array([[1, 2],[3, 4],[6,5]])
+print (my_2D_array.shape)
+#(3, 2) -> 3 rows and 2 columns
+</code></pre>
+
+<p>(b). Używanie shape do <b>zmiany</b> wymiar&oacute;w tablicy</p>
+<pre><code class="language-py">
+change_array = numpy.array([1,2,3,4,5,6])
+change_array.shape = (3, 2)
+print (change_array)
+
+#Output
+#   [[1 2]
+#    [3 4]
+#    [5 6]]
+</code></pre>
+<b>reshape</b>
+<p>Narzędzie reshape nadaje nowy kształt tablicy bez zmiany jej danych. Tworzy nową tablicę i nie modyfikuje samej
+    tablicy oryginalnej.</p>
+
+<pre><code class="language-py">
+my_array = numpy.array([1,2,3,4,5,6])
+print (numpy.reshape(my_array,(3,2)))
+
+#Output
+#    [[1 2]
+#    [3 4]
+#    [5 6]]
+
+# W NumPy : tablice w rozmaity sposób przekształcone (np. przez operację reshape())
+#           często okazują się być różnymi widokami na te same dane. Dla przykładu:
+
+In [39]: A = numpy.arange(24)
+
+In [40]: A
+Out[40]:
+array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+       17, 18, 19, 20, 21, 22, 23])
+
+In [41]: B = A.reshape(6, 4)
+
+In [42]: B
+Out[42]:
+array([[ 0,  1,  2,  3],
+       [ 4,  5,  6,  7],
+       [ 8,  9, 10, 11],
+       [12, 13, 14, 15],
+       [16, 17, 18, 19],
+       [20, 21, 22, 23]])
+</code></pre>
+
+
+<h3><strong>Dot vs matmul - różnice </strong></h3>
+<p>Z dokumentacji:</p>
+<blockquote><code>matmul</code>r&oacute;żni się od <code>dot</code>na dwa ważne sposoby.</blockquote>
+<ul>
+<li>
+<blockquote>Mnożenie przez skalary jest niedozwolone.</blockquote>
+</li>
+<li>
+<blockquote>Stosy macierzy są przesyłane razem tak, jakby macierze były elementami.</blockquote>
+</li>
+</ul>
+<p>Ostatni punkt wyjaśnia, że metody <code>dot</code>i <code>matmul</code>metody zachowują się inaczej, gdy przekazywane są tablice 3D (lub wyższego wymiaru). Cytując trochę z dokumentacji:</p>
+<p>Dla <code>matmul</code>:</p>
+<blockquote>Jeśli kt&oacute;rykolwiek z argument&oacute;w ma wartość ND, N&gt; 2, jest traktowany jako stos macierzy znajdujących się w dw&oacute;ch ostatnich indeksach i odpowiednio rozgłaszany.</blockquote>
+<p>Dla <code><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html" target="_blank" rel="noopener">np.dot</a></code>:</p>
+<blockquote>Dla tablic 2-W jest to r&oacute;wnoważne mnożeniu macierzy, a dla tablic 1-D - iloczynowi wewnętrznemu wektor&oacute;w (bez koniugacji zespolonej). <em>Dla wymiar&oacute;w N jest to iloczyn sumaryczny ostatniej osi a i przedostatniej części b</em></blockquote>
+
+
+
+
 
                                  <h3><strong>Korzystając z konsoli rozwiąż zadania </strong></h3>
 <pre><span>1. stw&oacute;rz array na 2 sposoby w kilku wymiarach (3,4 tablice),<br /></span><span>stw&oacute;rz jedną losową z użyciem where,<br /></span><span>użyj np.linspace(0,10,6),<br /></span><span>stw&oacute;rz zerowa i jedynkową tablicę<br /></span><span><br />2. pokaż ilość wymiar&oacute;w i rozmiar tablicy<br /></span><span><br />3. policz ilość elemnt&oacute;w i ich sumę<br /></span><span><br />4. pokaż indeksem elementy tablicy<br /></span><span><br />5 iteruj i wydrukuj tablicę<br /></span><span><br />6. zmień rozmiar tablicy<br /></span><span><br />7. stw&oacute;rz matrix, pokaż indeksy po matriksie<br /></span><span><br />8 zmień wymiar i rozmiar tablicy (reshape, view)<br /></span><span><br />9. numpy jaka jest roznica pomiedzy dot/matmul/mul - zastosuj</span></pre>
