@@ -3,140 +3,256 @@
 {% block content %}
 
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">List</h1>
+                        <h1 class="mt-4">Numpy</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">List</li>
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Numpy</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <p class="mb-0">
 
-<p><br /><strong>List - Lista </strong>&ndash; Zestaw powiązanych ze sobą obiekt&oacute;w. Listy tworzymy stosując nawiasy <strong>prostokątne</strong>, a zmienne oddzielamy przecinkami.&nbsp;</p>
-<p><br /><strong>Sp&oacute;jrz na przykład :&nbsp;</strong></p>
-<p>#Lista zwierzak&oacute;w<br />zwierzaki = [kot, zebra, koń, pies, ryba]</p>
-<p>#Temperatura obserwowana przez cały tydzień<br />temp = [0, -1, -1, 2, -4, -5, -3]</p>
-<p>#Obiekty tekstowe <br />words = ['Witaj', 'na', 'naszym', 'kursie']</p>
-<p>#Rożne obiekty <br />mobile_phone_details = ["apple", "iphone11", '64GB', 'Space Grey']</p>
-<p>#Lista w liście <br />mobile_phones = [ ["apple", "iphone11", '64GB', 'Space Grey'], ['Samsung', 'Galaxy Note 5', '128GB' 'Grey']]</p>
-<p><br />Listy można dostosować do własnych potrzeb. Możemy je powiększać o kolejne elementy, a także usuwać niepotrzebne. Do takich działań <em><strong>wykorzystujemy metody:&nbsp;</strong></em></p>
+
+<h3><strong>Numpy - ndarray </strong></h3>
+<p>N-dimmentional array, czyli (lista/tablica) wielowymiarowa. R&oacute;żni się wielowymiarowością od 1 wymiarowej listy w Pythonie, operacje na ndarray są szybsze w odniesieniu na operacjach na listach wPythonie</p>
+<p><br /><br /></p>
+<h3><strong>Tworzenie ndarray</strong></h3>
+<p><strong>Tablice jedno-wymiarowe </strong></p>
+<p>Podstawowe komendy, kt&oacute;rymi tworzymy tablice to</p>
 <ul>
-<li>Append</li>
-<li>Insert</li>
-<li>Extend</li>
-<li>Remove</li>
-<li>Pop&nbsp;</li>
+<li>
+<p>np.array(), w kt&oacute;rej podajemy wartości,</p>
+</li>
+<li>
+<p>np.arange(), w kt&oacute;rej podajemy zakres jakim, chcemy uzupełnić tablice,oraz odstęp liczbowy między nimi,</p>
+</li>
+<li>
+<p>oraz bardzo użyteczna funkcja w przypadku tworzenia wykres&oacute;w &ndash; np.linspace(), gdzie podajmy zakres liczbowy, oraz na ile liczb chcemy go podzielić:</p>
+</li>
 </ul>
-<p><br /><strong>Append</strong>&nbsp;</p>
-<p>Numbers = [1, 2, 3, 4, 5]</p>
-<p>Numbers.<strong>append</strong>(5)</p>
-<p><br />Print(Numbers)</p>
-<p>Metoda ta dodaje pojedynczą wartość na końcu listy.</p>
+
+
+<pre><code class="language-py">
+a = np.array([1,3,5,7])
+# array([1, 3, 5, 7])
+b = np.arange(4)
+# array([0, 1, 2, 3])
+np.arange(2,10,1)
+# array([2, 3, 4, 5, 6, 7, 8, 9])
+np.linspace(0,10,6)
+# array([ 0.,  2.,  4.,  6.,  8., 10.])
+</code></pre>
+
+<p><strong>Tworzenie tablicy wielo-wymiarowej</strong></p>
+<ul>
+<li>
+<p>Ręcznie, za pomocą np.array()</p>
+</li>
+<li>
+<p>Wykorzystać kolejną użyteczną funkcję, w celu uzupełnienia jej zerami &ndash; np.zeros() lub jedynkami np.ones() albo wartościami losowymi np.random.random()</p>
+</li>
+</ul>
+
+<pre><code class="language-py">
+c = np.array([[1,2,3],[4,5,6]])
+# array([[1, 2, 3],
+#       [4, 5, 6]])
+d = np.zeros((2,3))
+# array([[0., 0., 0.],
+#       [0., 0., 0.]])
+d = np.ones((2,3))
+# array([[1., 1., 1.],
+#       [1., 1., 1.]])
+np.random.random((2,3))
+# array([[0.16868203, 0.31090109, 0.7210469 ],
+#       [0.0750029 , 0.08401428, 0.96992496]])
+np.random.rand(5)
+# tworzy tablicę z zakresu od 0 do 1
+</code></pre>
+
+<h3><strong>Macierz</strong></h3>
+
+<p>Matrix może mieć&nbsp;rozmaite typy, ale : wszystkie elementy muszą być takie same.</p>
+<p>Zbi&oacute;r jednakowo długich wektor&oacute;w to macierz. Tworzymy je w Pythonie jako złożenie list.</p>
+<pre><code>numpy_matrix = np.array([[1,2,3], [5,7,11]])</code><code>numpy_matrix.shape</code><code>&gt;&gt; (2, 3)</code></pre>
+
+<h3><strong>Operacje na tablicach</strong></h3>
+<p>W NumPy, możemy wykonywać wszystkie podstawowe operacje matematyczne, takie jak dodawanie, odejmowanie, mnożenie itd.</p>
+<p>Dodatkowo, mamy do dyspozycji użyteczne funkcje, sprawdzające jej rozmiar &ndash; shape, transponujące &ndash; T.</p>
+<p>Możemy r&oacute;wnież, w łatwy spos&oacute;b, sprawdzać wartości poszczeg&oacute;lnych element&oacute;w i tworzyć maski.</p>
 <p><br /><br /></p>
-<p><strong>Insert&nbsp;</strong></p>
-<p>Sprawdź poniższy kod :&nbsp;</p>
-<p><br /><br /></p>
-<p>Tak samo jak metoda <strong>Append </strong>dodaje wartość do listy, jednak jest bardziej zaawansowana ponieważ pozwala użytkownikowi na wybranie miejsca w liście.&nbsp;</p>
-<p><br /><br /></p>
-<p><strong>Przypomnijmy :&nbsp;</strong></p>
-<table width="474">
-<tbody>
-<tr>
-<td width="153">
-<p><strong>Kolejność</strong></p>
-</td>
-<td width="156">
-<p><strong>Indeks&nbsp;</strong></p>
-</td>
-</tr>
-<tr>
-<td width="154">
-<p><strong>Wartość_1</strong></p>
-</td>
-<td width="153">
-<p><strong>1</strong></p>
-</td>
-<td width="156">
-<p><strong>0</strong></p>
-</td>
-</tr>
-<tr>
-<td width="154">
-<p><strong>Wartość_2</strong></p>
-</td>
-<td width="153">
-<p><strong>2</strong></p>
-</td>
-<td width="156">
-<p><strong>1</strong></p>
-</td>
-</tr>
-<tr>
-<td width="154">
-<p><strong>Wartość_3</strong></p>
-</td>
-<td width="153">
-<p><strong>3</strong></p>
-</td>
-<td width="156">
-<p><strong>2</strong></p>
-</td>
-</tr>
-<tr>
-<td width="154">
-<p><strong>Wartość_4</strong></p>
-</td>
-<td width="153">
-<p><strong>4</strong></p>
-</td>
-<td width="156">
-<p><strong>3</strong></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p><br />Sprawdź poniższy kod :&nbsp;</p>
-<p>Numbers = [1, 2, 3, 4, 5]</p>
-<p>Numbers.insert(1,3)</p>
-<p>Print(Numbers)</p>
-<p><br />Metoda insert przyjmuje dwa argumenty. W pierwszym podajemy numer indeksu, kt&oacute;ry przyjmie nasza dodana wartość. Drugim argumentem jest wybrana przez nas wartość.&nbsp;</p>
-<p><br /><br /></p>
-<p><strong>Extend&nbsp;</strong></p>
-<p>Sprawdź poniższy kod :&nbsp;</p>
-<p>numbers = [1, 2, 3, 4, 5]</p>
-<p>numbers.extend([6,7,8,9])</p>
-<p>print(numbers)</p>
-<p>Metoda insert pozwala dodawać kolejne listy do naszej listy.&nbsp;</p>
-<p><br /><strong>Remove&nbsp;</strong></p>
-<p>Sprawdź poniższy kod :&nbsp;</p>
-<p>numbers = [1, 2, 3, 4, 5]</p>
-<p>numbers.remove(3)</p>
-<p>print(numbers)</p>
-<p>Metoda remove pozwala na usunięcie obiekt&oacute;w. Jej argumentem jest wartość wybranego obiektu, kt&oacute;ra zostaje znaleziona na liście i usunięta.&nbsp;</p>
-<p><br /><strong>Pop&nbsp;</strong></p>
-<p>numbers = [1, 2, 3, 4, 5]</p>
-<p>numbers.remove(3)</p>
-<p>print(numbers)</p>
-<p><br />Dzięki metodzie pop można usunąć obiekty z listy używając indeks&oacute;w. W przypadku niepodania indeksu numbers.pop() python usunie ostatni element z listy.&nbsp;</p>
+<pre><code class="language-py">
+a = np.array([1,3,5,7])
+b = np.arange(4)
+c = np.array([[1,2,3],[4,5,6]])
+
+a+b
+# array([ 1,  4,  7, 10])
+c+d
+# array([[2., 3., 4.],
+#       [5., 6., 7.]])
+c**2
+# array([[ 1,  4,  9],
+#       [16, 25, 36]])
+c.shape
+# (2, 3)
+c.T
+# array([[1, 4],
+#       [2, 5],
+#       [3, 6]])
+c > 3
+# array([[False, False, False],
+#       [ True,  True,  True]])
+
+one_dim = np.array([1,2,3,4])
+one_dim.shape # kształt (,4)
+one_dim.ndim # liczba wymiarów – w tym przypadku 1 wymiar
+
+two_dim = np.array([[100, 200, 50, 400], [50, 0, 0, 100], [350, 100, 50, 200]])
+print("len: " + str(len(two_dim)))      # len tu nie rozumiem
+print("shape: " + str(two_dim.shape))  # rozmiar, kształt tablicy
+print("ndim: " + str(two_dim.ndim))   #ilość wymiarów
+print("size: " + str(two_dim.size))  #ilość elementów
+print("bajt-size: " + str(two_dim.itemsize))
+
+len: 3
+shape: (3, 4)
+ndim: 2
+size: 12
+bajt-size: 4
+</code></pre>
+
+<h3><strong>Operacje Macierze</strong></h3>
+
+<pre><code class="language-py">
+matrix2 = np.array([
+        [1,2,3],
+        [0,8,10],
+        [1,10,12]
+])
+
+#Suma wszystkich elementów to po prostu sum na obiekcie.
+matrix2.sum()
+>> 47
+
+#Sumując kolumny, otrzymamy tutaj:
+matrix2.sum(axis=0) #kolumny
+>> array([ 2, 20, 25])
+
+# A wiersze:
+matrix2.sum(axis=1) # wiersze
+>> array([ 6, 18, 23])
+
+# Dodawanie wektorów. Wykonywane jest ono z użyciem operatora +.
+np.array([1,2]) + np.array([8,9])
+>> array([ 9, 11])
+
+#Można też dodawać i mnożyć macierze.
+np.array([
+        [1,2],
+        [3,4]
+]) + \
+np.array([
+        [8,9],
+        [10,11]
+])
+>> array([[ 9, 11],
+       [13, 15]])
+
+# Dostępny jest też tzw. iloczyn skalarny (ang. dot product).
+np.array([
+        [1,2],
+        [3,4]
+]).dot([1,1])
+>> array([3, 7])
+</code></pre>
+                                <p></p>
+<h3><strong>Funkcje wbudowane</strong></h3>
 
 
-                                    This page is an example of using static navigation. By removing the
-                                    <code>.sb-nav-fixed</code>
-                                    class from the
-                                    <code>body</code>
-                                    , the top navigation and side navigation will become static on scroll. Scroll down this page to see an example
+<pre><code class="language-py">
+x = np.random.random((3,5))
+x
+# array([[0.43391468, 0.73430824, 0.92759808, 0.23966575, 0.16112573],
+#       [0.85501039, 0.67383523, 0.45245038, 0.26001489, 0.86884395],
+#       [0.17991555, 0.96628615, 0.22680872, 0.92979024, 0.52796391]])
+
+print(x.sum())
+print(x.min())
+print(x.max())
+print(x.mean())
+# 8.437531894577779
+# 0.1611257283125176
+# 0.9662861490415007
+# 0.5625021263051853
+</code></pre>
+
+<h3><strong>Indeksowanie</strong></h3>
+<pre><code class="language-py">
+a[2:]
+# array([5, 7])
+c[:1]
+# array([[1, 2, 3]])
+c[:1,1:]
+# array([[2, 3]])
+for x in c:
+    print (x)
+    for y in x:
+        print(y)
+# [4 5 6]
+# 1
+# 2
+# 3
+# [4 5 6]
+# 4
+# 5
+# 6
+for x in c.flat:
+    print(x)
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+[x for x in c if x[1] < 3]
+# [array([1, 2, 3])]
+</code></pre>
+
+<h3><strong>Macierz indeksowanie</strong></h3>
+<p>Takie macierze i wektory są indeksowane z zachowaniem pythonowych właściwości, czyli np. mając macierz</p>
 
 
-                                    KONIEC.
 
+<pre><code class="language-py">
+matrix1 = np.array([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+])
 
+#możemy pobrać pierwszy wiersz takim indeksowaniem
+matrix1[0, :]
+>> array([1, 2, 3])
 
+#a ostatnia kolumna to
+matrix1[:, -1]
+>> array([3, 6, 9])
+</code></pre>
+<h3><strong>dot/matmul/mul   + zmiana rozmiarów tablicy </strong></h3>
+?
+<h3><strong> zmiana rozmiarów tablicy </strong></h3>
 
-                                </p>
+                                <p></p>
+
+                                 <h3><strong>Korzystając z konsoli rozwiąż zadania </strong></h3>
+<pre><span>1. stw&oacute;rz array na 2 sposoby w kilku wymiarach (3,4 tablice),<br /></span><span>stw&oacute;rz jedną losową z użyciem where,<br /></span><span>użyj np.linspace(0,10,6),<br /></span><span>stw&oacute;rz zerowa i jedynkową tablicę<br /></span><span><br />2. pokaż ilość wymiar&oacute;w i rozmiar tablicy<br /></span><span><br />3. policz ilość elemnt&oacute;w i ich sumę<br /></span><span><br />4. pokaż indeksem elementy tablicy<br /></span><span><br />5 iteruj i wydrukuj tablicę<br /></span><span><br />6. zmień rozmiar tablicy<br /></span><span><br />7. stw&oacute;rz matrix, pokaż indeksy po matriksie<br /></span><span><br />8 zmień wymiar i rozmiar tablicy (reshape, view)<br /></span><span><br />9. numpy jaka jest roznica pomiedzy dot/matmul/mul - zastosuj</span></pre>
+<iframe src="https://trinket.io/embed/python/14ed53b672" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
                             </div>
                         </div>
-                        <div style="height: 100vh"></div>
-                        <div class="card mb-4"><div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div></div>
+
+
                     </div>
 
 {% endblock %}
