@@ -41,18 +41,6 @@ def analiza_page():
     return render_template("analiza2.html", args=args)
 
 
-@app.route('/spark')
-def spark_page():
-    args = ""
-    return render_template("spark.html", args=args)
-
-
-@app.route('/sql')
-def sql_page():
-    args = ""
-    return render_template("sql.html", args=args)
-
-
 @app.route('/flask')
 def flask_page():
     args = ""
