@@ -3,247 +3,28 @@
 {% block content %}
 
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">List</h1>
+                        <h1 class="mt-4">Pandas</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">List</li>
+                            <li class="breadcrumb-item active">Pandas</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <p class="mb-0">
 
-<p><br /><strong>Tuple - Krotka </strong>
-
-
-<p><b>nawias: okrągły ( ), brak nawias&oacute;w, choć według PEP 8 zaleca się stosowanie okrągłych</b></p>
-<p><b>cecha istotna: (</b><em><b>immutable</b></em><b>)! - niezmienna</b></p>
-<p>Krotki, podobnie jak listy, mogą zawierać mieszane typy danych (np. liczby całkowite, zmiennoprzecinkowe, tekst lub a listy).</p>
-<p></p>
-<pre><code class="language-py">
-
-tuple = (1,2,4,4,5,6)
-tuple2 = 1,4,5
-days = tuple(["pon","wto","śro","czw","pią","sob","nie"])
-
-# Krotka stworzona z różnych typów
-tup_mixed = (1, 'dwa', [3, 4.1])
-
-</code></pre>
-
-                                <p><b>Cechy:</b></p>
-<p>Podobna do listy, z tą r&oacute;żnicą, że gdy raz się zadeklaruje element, nie można go już modyfikować (czyli jest niemutowalny). Krotka służy więc do przechowywania r&oacute;żnego rodzaju element&oacute;w, kt&oacute;rych nie będziemy zamieniać lub przestawiać.</p>
-<p>Struktura niezmienna, wykorzystywana do przechowywania danych niezmiennych w czasie jak np. wsp&oacute;łrzędne gps.</p>
-<pre><code class="language-py">
-# 'Zbiorowe' definiowanie zmiennych
-belka1 = ('C30/37', 0.3, 0.5)	# parametry belki: klasa betonu, szerokość, wysokość
-(klasa_bet, b, h) = belka1
-
-#Teraz można bezpośrednio odwoływać się do poszczególnych parametrów belki
-print(klasa_bet)
-print(b)
-print(h)
-
-</code></pre>
-
-
-
-                                <p>Krotki, podobnie jak listy, mogą zawierać mieszane typy danych (np. liczby całkowite, zmiennoprzecinkowe, tekst lub a listy).</p>
-<p>Tuple opierają się na indexsach co pozwala im zachowywać zduplikowane elementy</p>
-<p>Krotki możemy używać w słownikach jako ich klucze.</p>
-<p>Krotka jest niezmienna, nie wywołamy na niej metod: <code>append</code>, <code>remove()</code>, <code>extend()</code> czy <code>pop()</code></p>
-<p><b>Indeksowanie</b></p>
-<p>Tuple opierają się na indexsach co pozwala im zachowywać zduplikowane elementy</p>
-
-<pre><code class="language-py">
-print(tup[0])    # odwołanie do pierwszego elementu krotki
-print(tup[-1])   # odwołanie do ostatniego elementu
-print(tup[1:])   # wyodrębnienie elementów krotki od drugiego do ostatniego
-
-days = ("pon", "wto", "śro")
-day_1, day_2, day_3 = days
-print(day_2)
-print(days[1])
-
->> wto
->> wto
-</code></pre>
-
-
-                                <p><b>Iterowanie po krotce</b></p>
-<p>po tuplach możemy iterowć, podobnie jak po listach, przeglądając elementy kolekcji</p>
-
-<pre><code class="language-py">
-
-tuple = (1, 6, 5, 3, 8)
-for i in tuple
-    print(i)
-
-</code></pre>
-
-
-
-                                <p><b>Operacje na krotkach </b></p>
-<pre><code class="language-py">tup = ('jeden', 'dwa', 'trzy')
-print(tup)
-
-# Zwraca liczbę elementów krotki
-print(len(tup))
-
-# Zwraca indeks pierwszego wystąpienia szukanego elementu w krotce
-print(tup.index('dwa'))
-
-# Zwraca liczbę wystąpień elementu w krotce
-print(tup.count('dwa'))
-
-# Prawda (True) jeśli element występuje, w przeciwnym przypadku fałsz (False)
-print('element' in tup)
-
-# Zwraca najmniejszy min() i największy max() element krotki
-tup_numbers = (1,2,3)   # żeby użyć tych metod krotka musi zawierać tylko elementy liczbowe
-print(tup_numbers)
-print(min(tup_numbers))
-print(max(tup_numbers))
-
-# Zwraca sumę elementów krotki
-print(sum(tup_numbers))
-
-
-</code></pre>
-
-<p><b>Połączenie </b></p>
-
-<pre><code class="language-py">
-
-print(tup1 + tup2)
-
-# lub:
-tup_new = tup2 + tup1   # tutaj w odwrotnej kolejności
-print(tup_new)
-
-</code></pre>
-
-
-<p><b>Powielanie</b></p>
-
-<pre><code class="language-py">
-
-print(('a', 'b', 'c')*3)
-
-</code></pre>
-
-
-<p><b>Sprawdzanie, czy jakiś element znajduje się na liście krotki za pomocą in:</b></p>
-
-<pre><code class="language-py">
-
-
-krotka = 34, 45.6,"tekst"
-
-if"tekst" in krotka:
-    print("Znaleziono w krotce ten element!")
-else:
-    print("Nie znaleziono w krotce tego elementu")
-
-</code></pre>
-
-
-
-<p><b>Znajdowanie indeksu pierwszego elementu w krotce za pomocą metody wewnętrznej index:</b></p>
-
-<pre><code class="language-py">
-
-krotka = (34, 45.6,"tekst")
-
-if "tekst" in krotka:
-    print("Znaleziono w krotce ten element pod indeksem {indeks}!".format(indeks = krotka.index("tekst")))
-</code></pre>
-
-<p><b>Zliczanie wystąpień w krotce danej wartości za pomocą metody wewnętrznej count:</b></p>
-
-<pre><code class="language-py">
-
-krotka = (2, 4, 6, 7, 7, 7)
-print("Znaleziono w krotce {indeks} elementów zawierających liczbę 7!".format(indeks = krotka.count(7)))
-</code></pre>
-
-<p><b>Uzyskiwanie krotki odwróconej:</b></p>
-
-<pre><code class="language-py">
-
-krotka = (2, 4, 6, 7, 7, 7)
-print(krotka[::-1])
-</code></pre>
-
-<p><b>Slicing - Uzyskiwanie wycinka krotki:</b></p>
-
-<pre><code class="language-py">
-
-krotka = (2, 4, 6, 7, 7, 7)
-print(krotka[1:4])
-</code></pre>
-
-
-
-                                <h3>Korzystając z konsoli rozwiąż zadania </h3>
-
-
-<iframe src="https://trinket.io/embed/python/3d8d7ce66b" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
-
-<p>Utw&oacute;rz krotkę 100 losowych liczb z zakresu &lt;1-1000&gt;. Następnie wykonaj poniższe ćwiczenia:</p>
-<ol>
-<li>
-<p>Napisz program, kt&oacute;ry obliczy i wypisze na ekran sumę wszystkich element&oacute;w.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry znajdzie i wypisze na ekran najmniejszy element (wykonaj 2 wersje, bez użycia i używając wbudowaną funkcję języka Python).</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry znajdzie i wypisze na ekran największy element (wykonaj 2 wersje, bez użycia i używając wbudowaną funkcję języka Python).</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry znajdzie i wypisze na ekran medianę element&oacute;w.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry obliczy i wypisze na ekran iloczyn wszystkich element&oacute;w.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran ilość liczb 3-cyfrowych na liście</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran liczbę oraz jej ilość powt&oacute;rzeń, kt&oacute;ra najczęściej występuje na liście.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran wszystkie liczby, kt&oacute;re się nie powtarzają na liście.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran, kt&oacute;re liczby powtarzają się na liście dokładnie 3 razy.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran, kt&oacute;re liczby zawierają w sobie liczbę 21, np. 21, 213, 521.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran ile liczb jest większych niż 800.</p>
-</li>
-<li>
-<p>Napisz program, kt&oacute;ry sprawdzi i wypisze na ekran trzy najmniejsze i trzy największe liczby z.</p>
-</li>
-<li>
-<p>Wypisz wszystkie elementy krotki, umieszczając przy każdym informację, ile razy występuje w krotce.</p>
-</li>
-<li>
-<p>Oblicz ile jest element&oacute;w, kt&oacute;rych wartość mieści się w przedziale &lt;a,b&gt;. Wartości a i b podaje użytkownik.</p>
-</li>
-<li>
-<p>Oblicz ile jest element&oacute;w, kt&oacute;rych wartość jest parzysta.</p>
-</li>
-<li>
-<p>Oblicz ile jest element&oacute;w, kt&oacute;rych wartość jest nieparzysta.</p>
-</li>
-</ol>
-
-                                    KONIEC.
-
-
+<h3><b>Pandas co chce powiedziec</b></h3>
+<p>import pandas as pd</p>
+<p>jak czytać dane z excela z csv z html i z api</p>
+<p>head &ndash; pokazywanie danych, tail</p>
+<p>łaczenie baz danych w 1 df po id , itp., join</p>
+<p>rename</p>
+<p>shape</p>
+describe<br />koncepcja analityczna
+<p>tw&oacute;rzenie nowego df &ndash; kt&oacute;ry zawiera tyle iteresujace nas kolumny</p>
+<p>wyświetlanie, czyczenie null</p>
+<p>sortowanie, grupowanie wyświetlanie koncepcji analitycznej, r&oacute;wnież w wybranych zakresach</p>
+<p>zastosowanie unique, value_counts, &lt; &amp; ==
+</p>
 
 
 
