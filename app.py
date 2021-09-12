@@ -98,7 +98,6 @@ print(x.mean())
 
 one_dim = np.array([1,2,3,4])
 
-
 two_dim = np.array([[100, 200, 50, 400], [50, 0, 0, 100], [350, 100, 50, 200]])
 
 print("len: " + str(len(two_dim)))      # len tu nie rozumiem
@@ -116,17 +115,11 @@ print("bajt-size: " + str(two_dim.itemsize))
 # stwórz jedną losową z użyciem where,
 # użyj np.linspace(0,10,6),
 # stwórz zerowa i jedynkową tablicę
-
 # 2. pokaż ilość wymiarów i rozmiar tablicy
-
 # 3.  policz ilość elemntów i ich sumę
-
 # 4. pokaż indeksem elementy tablicy
-
-# 5. zmień rozmiar tablicy
-
-# 6. stwórz matrix, pokaż indeksy po matriksie
-
-# 7 zmień wymiar i rozmiar tablicy (reshape, view)
-
-# 8. numpy jaka jest roznica pomiedzy dot/matmul/mul - zastosuj
+# 5 iteruj i wydrukuj tablicę
+# 6. zmień rozmiar tablicy
+# 7. stwórz matrix, pokaż indeksy po matriksie
+# 8 zmień wymiar i rozmiar tablicy (reshape, view)
+# 9. numpy jaka jest roznica pomiedzy dot/matmul/mul - zastosuj

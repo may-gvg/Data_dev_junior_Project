@@ -1,8 +1,11 @@
+import csv
+import os
+
 from flask import Flask, render_template, redirect, url_for, request, flash, abort
 import tmdb_client
 import random
 import datetime
-
+import tablib
 
 app = Flask(__name__)
 app.secret_key = b'my-secret'
@@ -14,7 +17,24 @@ FAVORITES = set()
 @app.route('/')
 def homepage():
     args = ""
-    return render_template("homepage.html", args=args)
+    data = []
+    with open('static\\analiza\\analiza.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        c = 1
+        for row in reader:
+            if c == 1:
+                c += 1
+                continue
+            data.append(row)
+
+    data2 = []
+    with open('static\\analiza\\analiza.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            data2.append(row)
+            break
+
+    return render_template("homepage.html", args=args, data=data, data2=data2)
 
 
 @app.route('/numpy')
