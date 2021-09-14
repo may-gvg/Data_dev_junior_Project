@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+                     <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+
+   <img src="static/images/python.png"  alt="Python img">
+
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Ceny walut, zakup</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="/waluty">zobacz</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Ściągnij ceny walut</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="/sciagnij">sciagnij output.csv</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="row">
+                            {% include 'barchart.html' %}
+                            <!-- bar chart and area chart -->
+                            {% include 'areachart.html' %}
+                        </div>
+                         {% include 'csv.html' %}
+                         <!-- csv -->
+                    </div>
+
+{% endblock %}
