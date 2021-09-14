@@ -80,6 +80,19 @@ def waluty():
 def homepage():
     args = ""
     data = []
+    area_data = []
+    bar_data = []
+    area_labels = []
+    bar_labels = []
+
+    waluty = read_csv()
+    for waluta in waluty:
+        wartosc = float(waluty[waluta])
+        area_data.append(wartosc)
+        bar_data.append(wartosc)
+        area_labels.append(waluta)
+        bar_labels.append(waluta)
+
     with open('static/analiza/analiza.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         c = 1
@@ -94,7 +107,7 @@ def homepage():
         for row in reader:
             data2.append(row)
             break
-    return render_template("homepage.html", args=args, data=data, data2=data2)
+    return render_template("homepage.html", args=args, data=data, data2=data2, area_data=area_data.__str__(), bar_data=bar_data.__str__(), area_labels=area_labels.__str__(), bar_labels=bar_labels.__str__())
 
 
 
