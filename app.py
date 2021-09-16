@@ -57,7 +57,6 @@ def waluty():
     if request.method == 'GET':
         print("We received GET")
         return render_template("waluty.html", options=options, args=args, data3=data3, data=data)
-        #return render_template("waluty.html", options=options)
     elif request.method == 'POST':
         print("We received POST")
         print(request.form)
@@ -110,15 +109,12 @@ def homepage():
     return render_template("homepage.html", args=args, data=data, data2=data2, area_data=area_data.__str__(), bar_data=bar_data.__str__(), area_labels=area_labels.__str__(), bar_labels=bar_labels.__str__())
 
 
-
-
 @app.route('/sciagnij/')
 def plot_csv():
     return send_file('static/analiza/output.csv',
                      mimetype='text/csv',
                      attachment_filename='output.csv',
                      as_attachment=True)
-
 
 
 @app.route('/numpy')
@@ -133,18 +129,6 @@ def pandas_page():
     return render_template("pandas.html", args=args)
 
 
-@app.route('/wykresy')
-def wykresy_page():
-    args = ""
-    return render_template("wykresy.html", args=args)
-
-
-@app.route('/analiza')
-def analiza_page():
-    args = ""
-    return render_template("analiza.html", args=args)
-
-
 @app.route('/flask')
 def flask_page():
     args = ""
@@ -157,16 +141,16 @@ def pytest_page():
     return render_template("pytest.html", args=args)
 
 
+@app.route('/analiza')
+def analiza_page():
+    args = ""
+    return render_template("analiza.html", args=args)
+
+
 @app.route('/analiza2')
 def analiza2_page():
     args = ""
     return render_template("analiza2.html", args=args)
-
-
-@app.route('/analiza3')
-def analiza3_page():
-    args = ""
-    return render_template("analiza3.html", args=args)
 
 
 if __name__ == '__main__':
