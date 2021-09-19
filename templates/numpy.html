@@ -311,30 +311,9 @@ array([[ 0,  1,  2,  3],
 </code></pre>
 
 
-<h3><strong>Dot vs matmul - różnice </strong></h3>
-<p>Z dokumentacji:</p>
-<blockquote><code>matmul</code>r&oacute;żni się od <code>dot</code>na dwa ważne sposoby.</blockquote>
-<ul>
-<li>
-<blockquote>Mnożenie przez skalary jest niedozwolone.</blockquote>
-</li>
-<li>
-<blockquote>Stosy macierzy są przesyłane razem tak, jakby macierze były elementami.</blockquote>
-</li>
-</ul>
-<p>Ostatni punkt wyjaśnia, że metody <code>dot</code>i <code>matmul</code>metody zachowują się inaczej, gdy przekazywane są tablice 3D (lub wyższego wymiaru). Cytując trochę z dokumentacji:</p>
-<p>Dla <code>matmul</code>:</p>
-<blockquote>Jeśli kt&oacute;rykolwiek z argument&oacute;w ma wartość ND, N&gt; 2, jest traktowany jako stos macierzy znajdujących się w dw&oacute;ch ostatnich indeksach i odpowiednio rozgłaszany.</blockquote>
-<p>Dla <code><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html" target="_blank" rel="noopener">np.dot</a></code>:</p>
-<blockquote>Dla tablic 2-W jest to r&oacute;wnoważne mnożeniu macierzy, a dla tablic 1-D - iloczynowi wewnętrznemu wektor&oacute;w (bez koniugacji zespolonej). <em>Dla wymiar&oacute;w N jest to iloczyn sumaryczny ostatniej osi a i przedostatniej części b</em></blockquote>
 
+<iframe src="https://trinket.io/embed/python/9e69b1ba24" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
-
-
-
-                                 <h3><strong>Korzystając z konsoli rozwiąż zadania </strong></h3>
-<pre><span>1. stw&oacute;rz array na 2 sposoby w kilku wymiarach (3,4 tablice),<br /></span><span>stw&oacute;rz jedną losową z użyciem where,<br /></span><span>użyj np.linspace(0,10,6),<br /></span><span>stw&oacute;rz zerowa i jedynkową tablicę<br /></span><span><br />2. pokaż ilość wymiar&oacute;w i rozmiar tablicy<br /></span><span><br />3. policz ilość elemnt&oacute;w i ich sumę<br /></span><span><br />4. pokaż indeksem elementy tablicy<br /></span><span><br />5 iteruj i wydrukuj tablicę<br /></span><span><br />6. zmień rozmiar tablicy<br /></span><span><br />7. stw&oacute;rz matrix, pokaż indeksy po matriksie<br /></span><span><br />8 zmień wymiar i rozmiar tablicy (reshape, view)<br /></span><span><br />9. numpy jaka jest roznica pomiedzy dot/matmul/mul - zastosuj</span></pre>
-<iframe src="https://trinket.io/embed/python/14ed53b672" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
                             </div>
                         </div>
