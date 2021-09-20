@@ -54,6 +54,15 @@
 
                         </div>
                         <div class="row">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
                             {% include 'barchart.html' %}
                             <!-- bar chart and area chart -->
                             {% include 'areachart.html' %}
