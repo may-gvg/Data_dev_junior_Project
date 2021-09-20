@@ -3,6 +3,7 @@ import csv
 import requests
 from flask import Flask, render_template, redirect, request, flash
 from flask import send_file
+from flask_session import Session
 from werkzeug.utils import secure_filename
 
 
@@ -10,7 +11,12 @@ UPLOAD_FOLDER = ('static/analiza')
 ALLOWED_EXTENSIONS = {'html', 'csv'}
 
 app = Flask(__name__)
+app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
 
 
 def read_csv():
@@ -148,7 +154,8 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect("/")
-        return
+        flash("Wrong filename extension")
+        return redirect("/")
 
 
 @app.route('/upload2')
@@ -170,7 +177,8 @@ def upload_file2():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect("/")
-        return
+        flash("Wrong filename extension")
+        return redirect("/")
 
 
 @app.route('/numpy')
