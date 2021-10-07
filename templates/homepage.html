@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-<div class="col-xl-3 col-md-6">
+                        <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
                                     <div class="card-body">Upload pd to csv</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -54,6 +54,15 @@
 
                         </div>
                         <div class="row">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
                             {% include 'barchart.html' %}
                             <!-- bar chart and area chart -->
                             {% include 'areachart.html' %}

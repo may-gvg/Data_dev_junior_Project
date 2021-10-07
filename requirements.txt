@@ -23,6 +23,8 @@ tenacity==8.0.1
 urllib3==1.26.5
 Werkzeug==2.0.1
 gunicorn
-
+Flask-Session
 WTForms~=2.3.3
 flask_wtf
+seaborn~=0.11.2
+SQLAlchemy~=1.4.23
