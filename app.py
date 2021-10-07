@@ -1,14 +1,19 @@
-import os
 import csv
-import requests
-from flask import Flask, render_template, redirect, request, flash
-from flask import send_file
+import io
+import os
+from flask import Flask, render_template, redirect, request, flash, send_file
 from flask_session import Session
+import requests
 from werkzeug.utils import secure_filename
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
 
 
 UPLOAD_FOLDER = ('static/analiza')
-ALLOWED_EXTENSIONS = {'html', 'csv'}
+ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -122,6 +127,113 @@ def homepage():
     return render_template("homepage.html", args=args, data=data, data2=data2, area_data=area_data.__str__(), bar_data=bar_data.__str__(), area_labels=area_labels.__str__(), bar_labels=bar_labels.__str__())
 
 
+df2 = pd.read_csv('static/analiza/analiza.csv')
+
+# value counts data butony
+data = df2.iloc[:, 1].value_counts()
+data1 = df2.iloc[:, 0].value_counts()
+data2 = df2.iloc[:, 2].value_counts()
+data3 = df2.iloc[:, 3].value_counts()
+data4 = df2.iloc[:, 4].value_counts()
+data5 = df2.iloc[:, 5].value_counts()
+
+# describe data
+x = df2.describe()
+
+# sql
+
+# Create your connection.
+#cnx = sqlite3.connect('file.db')
+#df = pd.read_sql_query("SELECT * FROM table_name", cnx)
+
+
+
+# excel
+
+#df2 = pd.read_excel('static/analiza/analiza.xls')
+# df2 = pd.read_excel('static/analiza/analiza.xlsx',  'Sheet1')
+
+#json
+# df2 = pd.read_json('data/simple.json')
+
+
+
+@app.route('/analysis')
+def analysis():
+    return render_template("analysis.html", data=x.to_html())
+
+#df2.describe()
+def do_plot():
+    # bar
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.barplot(x=data.index, y=data, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot1():
+    # line
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.lineplot(x=data.index, y=data, palette='Set2');
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot2():
+    # kołowy
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres1')
+    plt.pie(data, labels=data.index, autopct='%1.1f%%', startangle=150, shadow=True);
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+
+
+
+
+@app.route('/desc', methods=['GET'])
+def desc():
+    bytes_obj = do_plot()
+# wybór do_plot albo do_plot1 albo do_plot2
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+
+
+@app.route('/desc')
+def desca():
+    return render_template("visual.html")
+
+
+# API reader
+#URL = 'http://raw.githubusercontent.com/BindiChen/machine-learning/master/data-analysis/027-pandas-convert-json/data/simple.json'df = pd.read_json(URL)
+#df2 = pd.read_json(URL)
+
+
+
+
+
 @app.route('/sciagnij/')
 def plot_csv():
     return send_file('static/analiza/output.csv',
@@ -161,6 +273,12 @@ def upload_file():
 @app.route('/upload2')
 def upload2():
     return render_template('upload2.html')
+
+
+
+
+
+
 
 
 @app.route('/upload2', methods=['GET', 'POST'])
