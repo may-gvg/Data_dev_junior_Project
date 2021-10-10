@@ -2,19 +2,16 @@ import csv
 import io
 import os
 import sqlite3
-
-from json2html import *
 from flask import Flask, render_template, redirect, request, flash, send_file
 from flask_session import Session
 import requests
-from werkzeug.utils import secure_filename
-from wtforms import StringField, Form, validators, SubmitField, SelectField
 import urllib3
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-
-
+from json2html import *
+from werkzeug.utils import secure_filename
+from wtforms import StringField, Form, validators, SubmitField, SelectField
 
 UPLOAD_FOLDER = 'static/analiza'
 ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
@@ -26,8 +23,6 @@ app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 Session(app)
-
-
 
 
 def read_csv():
@@ -102,6 +97,8 @@ def waluty():
 
 @app.route('/')
 def homepage():
+    global df2
+    df2 = pd.read_csv('static/analiza/analiza.csv')
     args = ""
     data = []
     area_data = []
@@ -139,7 +136,8 @@ def homepage():
     data4 = []
     for c in df2.keys():
         data4.append(c)
-    return render_template("homepage.html", args=args, data=data, data2=data3, data3=data3, data4 = data4, area_data=area_data.__str__(),
+    return render_template("homepage.html", args=args, data=data, data2=data3, data3=data3, data4=data4,
+                           area_data=area_data.__str__(),
                            bar_data=bar_data.__str__(), area_labels=area_labels.__str__(),
                            bar_labels=bar_labels.__str__())
 
@@ -147,9 +145,9 @@ def homepage():
 cnx = sqlite3.connect('static/analiza/analiza.db')
 
 df2 = pd.read_csv('static/analiza/analiza.csv')
-#df2 = pd.read_excel('static/analiza/analiza.xls')
-#df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
-#rozładowałem sie sekunda
+# df2 = pd.read_excel('static/analiza/analiza.xls')
+# df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
+# rozładowałem sie sekunda
 
 
 # value counts data butony
@@ -164,14 +162,12 @@ data5 = df2.iloc[:, 5].value_counts()
 x = df2.describe()
 
 
-
-
-
 @app.route('/analysis')
 def analysis():
     return render_template("analysis.html", data7=x.to_html())
 
-#kolumna 1
+
+# kolumna 1
 
 def do_plot():
     # bar
@@ -217,7 +213,8 @@ def do_plot2():
     bytes_image.seek(0)
     return bytes_image
 
-#kolumna 2
+
+# kolumna 2
 
 def do_plot3():
     # bar
@@ -263,7 +260,8 @@ def do_plot5():
     bytes_image.seek(0)
     return bytes_image
 
-#kolumna 3
+
+# kolumna 3
 
 
 def do_plot6():
@@ -274,7 +272,7 @@ def do_plot6():
     plt.title('Wykres 1')
     sns.barplot(x=data2.index, y=data2, palette='Set2')
 
-    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flask
     bytes_image = io.BytesIO()
     plt.savefig(bytes_image, format='png')
     bytes_image.seek(0)
@@ -311,7 +309,7 @@ def do_plot8():
     return bytes_image
 
 
-#kolumna 4
+# kolumna 4
 
 def do_plot9():
     # bar
@@ -358,7 +356,7 @@ def do_plot11():
     return bytes_image
 
 
-#kolumna 5
+# kolumna 5
 
 def do_plot12():
     # bar
@@ -405,7 +403,7 @@ def do_plot14():
     return bytes_image
 
 
-#kolumna 6
+# kolumna 6
 
 def do_plot15():
     # bar
@@ -452,7 +450,6 @@ def do_plot17():
     return bytes_image
 
 
-
 @app.route('/desc2/<typ>', methods=['GET'])
 def desc(typ="pie"):
     if typ == 'pie':
@@ -479,6 +476,7 @@ def desc3(typ="pie"):
     return send_file(bytes_obj,
                      attachment_filename='plot.png',
                      mimetype='image/png')
+
 
 @app.route('/desc4/<typ>', methods=['GET'])
 def desc4(typ="pie"):
@@ -521,6 +519,7 @@ def desc6(typ="pie"):
                      attachment_filename='plot.png',
                      mimetype='image/png')
 
+
 @app.route('/desc7/<typ>', methods=['GET'])
 def desc7(typ="pie"):
     if typ == 'pie':
@@ -535,8 +534,7 @@ def desc7(typ="pie"):
                      mimetype='image/png')
 
 
-
-#kolumna 1
+# kolumna 1
 @app.route('/esc', methods=["GET", "POST"])
 def desca():
     form = Wybieraczka(request.form)
@@ -547,7 +545,8 @@ def desca():
         print(typ)
     return render_template("visual.html", form=form, typ=typ)
 
-#kolumna 2
+
+# kolumna 2
 @app.route('/esc1', methods=["GET", "POST"])
 def desca1():
     form = Wybieraczka(request.form)
@@ -558,7 +557,8 @@ def desca1():
         print(typ)
     return render_template("visual1.html", form=form, typ=typ)
 
-#kolumna 3
+
+# kolumna 3
 @app.route('/esc2', methods=["GET", "POST"])
 def desca2():
     form = Wybieraczka(request.form)
@@ -570,9 +570,10 @@ def desca2():
     return render_template("visual2.html", form=form, typ=typ)
 
 
-#kolumna 4
+# kolumna 4
 @app.route('/esc3', methods=["GET", "POST"])
 def desca3():
+
     form = Wybieraczka(request.form)
     typ = 'pie'
 
@@ -582,7 +583,7 @@ def desca3():
     return render_template("visual3.html", form=form, typ=typ)
 
 
-#kolumna 5
+# kolumna 5
 @app.route('/esc4', methods=["GET", "POST"])
 def desca4():
     form = Wybieraczka(request.form)
@@ -594,7 +595,7 @@ def desca4():
     return render_template("visual4.html", form=form, typ=typ)
 
 
-#kolumna 6
+# kolumna 6
 @app.route('/esc5', methods=["GET", "POST"])
 def desca5():
     form = Wybieraczka(request.form)
@@ -604,8 +605,6 @@ def desca5():
         typ = form.typ.data
         print(typ)
     return render_template("visual5.html", form=form, typ=typ)
-
-
 
 
 @app.route('/jsonreader', methods=["GET", "POST"])
@@ -620,7 +619,8 @@ def json_reader():
         http = urllib3.PoolManager()
         r = http.request('GET', json)
         preview = r.data
-        preview = json2html.convert(json = r.data.decode('UTF-8'), table_attributes="class=\"table table-bordered table-hover\"")
+        preview = json2html.convert(json=r.data.decode('UTF-8'),
+                                    table_attributes="class=\"table table-bordered table-hover\"")
 
         with open('static/analiza/anal.json', 'wb') as f:
             f.write(r.data)
@@ -633,13 +633,12 @@ class JsonForm(Form):
     send = SubmitField('send')
 
 
-
 @app.route('/jsonreader', methods=["GET", "POST"])
 def AQQ():
     form = JsonForm(request.form)
     if request.method == 'POST':
         json = form.json.data
-      #  df = pd.read_json('data/simple.json')
+        #  df = pd.read_json('data/simple.json')
         print(json)
         p = pd.read_json(json)
         print(p)

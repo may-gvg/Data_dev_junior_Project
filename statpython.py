@@ -52,11 +52,11 @@ average_fertility = sum_of_fertility_element / no_of_elements
 
 print("Average fertility: " + str(average_fertility))
 
-sum = 0
+suma = 0
 for age in fertility_rate_list:
     c = (age - average_age) ** 2
     sum += c
-wariancja_fertility = sum / (len(fertility_rate_list) - 1)
+wariancja_fertility = suma / (len(fertility_rate_list) - 1)
 
 print("Wariancja fertility: " + str(wariancja_fertility))
 
@@ -68,19 +68,19 @@ expectancy_at_birth_list2 = [76.84878, 81.40732, 77.57895, 74.16341, 68.84907,
                              67.5482, 55.02451, 76.2799, 82.29024, 69.80695,
                              81.40112, 82.19756, 74.22683, 80.12888, 45.55095]
 
-sum = 0
-l = len(fertility_rate_list)
-for i in range(0, l):
-    sum += (expectancy_at_birth_list2[i] - average_age) * (fertility_rate_list[i] - average_fertility)
+suma = 0
+ilosc = len(fertility_rate_list)
+for i in range(0, ilosc):
+    suma += (expectancy_at_birth_list2[i] - average_age) * (fertility_rate_list[i] - average_fertility)
 
-result = sum / (l - 1)
+result = suma / (ilosc - 1)
 
 print("Kowariancja: " + str(result))
 
 wspolczynnik_korelacji = result / (odchylenie_standardowe - odchylenie_standardowe_fertility)
 print("Współczynnik korelacji: " + str(wspolczynnik_korelacji))
 
-###0,1<|r|≤0,3 – korelacja słaba
+# 0,1<|r|≤0,3 – korelacja słaba
 # Korelacja słaba - wskazuje na fakt, że dobrze się rozmnażać i poprawia to długość życia ale bez przesady
 # i z umiarem ;)
 
