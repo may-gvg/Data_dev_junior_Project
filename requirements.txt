@@ -31,6 +31,5 @@ SQLAlchemy~=1.4.23
 WTForms~=2.3.3
 flask_wtf
 flask_session
-flask
 seaborn
 xlrd
