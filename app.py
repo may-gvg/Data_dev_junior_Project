@@ -1,18 +1,22 @@
 import csv
 import io
 import os
+import sqlite3
+
+from json2html import *
 from flask import Flask, render_template, redirect, request, flash, send_file
 from flask_session import Session
 import requests
 from werkzeug.utils import secure_filename
-
+from wtforms import StringField, Form, validators, SubmitField, SelectField
+import urllib3
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
 
 
-UPLOAD_FOLDER = ('static/analiza')
+UPLOAD_FOLDER = 'static/analiza'
 ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
 
 app = Flask(__name__)
@@ -22,6 +26,8 @@ app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 Session(app)
+
+
 
 
 def read_csv():
@@ -124,14 +130,31 @@ def homepage():
         for row in reader:
             data2.append(row)
             break
-    return render_template("homepage.html", args=args, data=data, data2=data2, area_data=area_data.__str__(), bar_data=bar_data.__str__(), area_labels=area_labels.__str__(), bar_labels=bar_labels.__str__())
+    data3 = []
+    for index, row in df2.iterrows():
+        l = []
+        for i in range(0, row.size):
+            l.append(row[i])
+        data3.append(l)
+    data4 = []
+    for c in df2.keys():
+        data4.append(c)
+    return render_template("homepage.html", args=args, data=data, data2=data3, data3=data3, data4 = data4, area_data=area_data.__str__(),
+                           bar_data=bar_data.__str__(), area_labels=area_labels.__str__(),
+                           bar_labels=bar_labels.__str__())
 
+
+cnx = sqlite3.connect('static/analiza/analiza.db')
 
 df2 = pd.read_csv('static/analiza/analiza.csv')
+#df2 = pd.read_excel('static/analiza/analiza.xls')
+#df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
+#rozładowałem sie sekunda
+
 
 # value counts data butony
-data = df2.iloc[:, 1].value_counts()
-data1 = df2.iloc[:, 0].value_counts()
+data = df2.iloc[:, 0].value_counts()
+data1 = df2.iloc[:, 1].value_counts()
 data2 = df2.iloc[:, 2].value_counts()
 data3 = df2.iloc[:, 3].value_counts()
 data4 = df2.iloc[:, 4].value_counts()
@@ -140,28 +163,15 @@ data5 = df2.iloc[:, 5].value_counts()
 # describe data
 x = df2.describe()
 
-# sql
 
-# Create your connection.
-#cnx = sqlite3.connect('file.db')
-#df = pd.read_sql_query("SELECT * FROM table_name", cnx)
-
-
-
-# excel
-
-#df2 = pd.read_excel('static/analiza/analiza.xls')
-# df2 = pd.read_excel('static/analiza/analiza.xlsx',  'Sheet1')
-
-#json
-# df2 = pd.read_json('data/simple.json')
 
 
 
 @app.route('/analysis')
 def analysis():
-    return render_template("analysis.html", data=x.to_html())
+    return render_template("analysis.html", data7=x.to_html())
 
+#kolumna 1
 
 def do_plot():
     # bar
@@ -184,7 +194,7 @@ def do_plot1():
 
     plt.figure(figsize=(12, 6))
     plt.title('Wykres 2')
-    sns.lineplot(x=data.index, y=data, palette='Set2');
+    sns.lineplot(x=data.index, y=data, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -207,31 +217,438 @@ def do_plot2():
     bytes_image.seek(0)
     return bytes_image
 
+#kolumna 2
+
+def do_plot3():
+    # bar
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.barplot(x=data1.index, y=data1, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot4():
+    # line
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 2')
+    sns.lineplot(x=data1.index, y=data1, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot5():
+    # kołowy
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 3')
+    plt.pie(data1, labels=data1.index, autopct='%1.1f%%', startangle=150, shadow=True)
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+#kolumna 3
+
+
+def do_plot6():
+    # bar
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.barplot(x=data2.index, y=data2, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot7():
+    # line
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 2')
+    sns.lineplot(x=data2.index, y=data2, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot8():
+    # kołowy
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 3')
+    plt.pie(data2, labels=data2.index, autopct='%1.1f%%', startangle=150, shadow=True)
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+#kolumna 4
+
+def do_plot9():
+    # bar
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.barplot(x=data3.index, y=data3, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot10():
+    # line
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 2')
+    sns.lineplot(x=data3.index, y=data3, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot11():
+    # kołowy
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 3')
+    plt.pie(data3, labels=data3.index, autopct='%1.1f%%', startangle=150, shadow=True)
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+#kolumna 5
+
+def do_plot12():
+    # bar
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.barplot(x=data4.index, y=data4, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot13():
+    # line
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 2')
+    sns.lineplot(x=data4.index, y=data4, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot14():
+    # kołowy
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 3')
+    plt.pie(data4, labels=data4.index, autopct='%1.1f%%', startangle=150, shadow=True)
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+#kolumna 6
+
+def do_plot15():
+    # bar
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 1')
+    sns.barplot(x=data5.index, y=data5, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot16():
+    # line
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 2')
+    sns.lineplot(x=data5.index, y=data5, palette='Set2')
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
+
+
+def do_plot17():
+    # kołowy
+    # Loading
+
+    plt.figure(figsize=(12, 6))
+    plt.title('Wykres 3')
+    plt.pie(data5, labels=data5.index, autopct='%1.1f%%', startangle=150, shadow=True)
+
+    # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
+    bytes_image = io.BytesIO()
+    plt.savefig(bytes_image, format='png')
+    bytes_image.seek(0)
+    return bytes_image
 
 
 
-
-
-@app.route('/desc', methods=['GET'])
-def desc():
-    bytes_obj = do_plot()
-# wybór do_plot albo do_plot1 albo do_plot2
+@app.route('/desc2/<typ>', methods=['GET'])
+def desc(typ="pie"):
+    if typ == 'pie':
+        bytes_obj = do_plot2()
+    if typ == 'bar':
+        bytes_obj = do_plot()
+    if typ == 'line':
+        bytes_obj = do_plot1()
+    # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
                      attachment_filename='plot.png',
                      mimetype='image/png')
 
 
-@app.route('/desc')
+@app.route('/desc3/<typ>', methods=['GET'])
+def desc3(typ="pie"):
+    if typ == 'pie':
+        bytes_obj = do_plot5()
+    if typ == 'bar':
+        bytes_obj = do_plot3()
+    if typ == 'line':
+        bytes_obj = do_plot4()
+    # wybór do_plot albo do_plot1 albo do_plot2
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+
+@app.route('/desc4/<typ>', methods=['GET'])
+def desc4(typ="pie"):
+    if typ == 'pie':
+        bytes_obj = do_plot8()
+    if typ == 'bar':
+        bytes_obj = do_plot6()
+    if typ == 'line':
+        bytes_obj = do_plot7()
+    # wybór do_plot albo do_plot1 albo do_plot2
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+
+
+@app.route('/desc5/<typ>', methods=['GET'])
+def desc5(typ="pie"):
+    if typ == 'pie':
+        bytes_obj = do_plot11()
+    if typ == 'bar':
+        bytes_obj = do_plot9()
+    if typ == 'line':
+        bytes_obj = do_plot10()
+    # wybór do_plot albo do_plot1 albo do_plot2
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+
+
+@app.route('/desc6/<typ>', methods=['GET'])
+def desc6(typ="pie"):
+    if typ == 'pie':
+        bytes_obj = do_plot14()
+    if typ == 'bar':
+        bytes_obj = do_plot13()
+    if typ == 'line':
+        bytes_obj = do_plot12()
+    # wybór do_plot albo do_plot1 albo do_plot2
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+
+@app.route('/desc7/<typ>', methods=['GET'])
+def desc7(typ="pie"):
+    if typ == 'pie':
+        bytes_obj = do_plot17()
+    if typ == 'bar':
+        bytes_obj = do_plot15()
+    if typ == 'line':
+        bytes_obj = do_plot16()
+    # wybór do_plot albo do_plot1 albo do_plot2
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+
+
+
+#kolumna 1
+@app.route('/esc', methods=["GET", "POST"])
 def desca():
-    return render_template("visual.html")
+    form = Wybieraczka(request.form)
+    typ = 'pie'
+
+    if request.method == 'POST' and form.validate():
+        typ = form.typ.data
+        print(typ)
+    return render_template("visual.html", form=form, typ=typ)
+
+#kolumna 2
+@app.route('/esc1', methods=["GET", "POST"])
+def desca1():
+    form = Wybieraczka(request.form)
+    typ = 'pie'
+
+    if request.method == 'POST' and form.validate():
+        typ = form.typ.data
+        print(typ)
+    return render_template("visual1.html", form=form, typ=typ)
+
+#kolumna 3
+@app.route('/esc2', methods=["GET", "POST"])
+def desca2():
+    form = Wybieraczka(request.form)
+    typ = 'pie'
+
+    if request.method == 'POST' and form.validate():
+        typ = form.typ.data
+        print(typ)
+    return render_template("visual2.html", form=form, typ=typ)
 
 
-# API reader
-#URL = 'http://raw.githubusercontent.com/BindiChen/machine-learning/master/data-analysis/027-pandas-convert-json/data/simple.json'df = pd.read_json(URL)
-#df2 = pd.read_json(URL)
+#kolumna 4
+@app.route('/esc3', methods=["GET", "POST"])
+def desca3():
+    form = Wybieraczka(request.form)
+    typ = 'pie'
+
+    if request.method == 'POST' and form.validate():
+        typ = form.typ.data
+        print(typ)
+    return render_template("visual3.html", form=form, typ=typ)
+
+
+#kolumna 5
+@app.route('/esc4', methods=["GET", "POST"])
+def desca4():
+    form = Wybieraczka(request.form)
+    typ = 'pie'
+
+    if request.method == 'POST' and form.validate():
+        typ = form.typ.data
+        print(typ)
+    return render_template("visual4.html", form=form, typ=typ)
+
+
+#kolumna 6
+@app.route('/esc5', methods=["GET", "POST"])
+def desca5():
+    form = Wybieraczka(request.form)
+    typ = 'pie'
+
+    if request.method == 'POST' and form.validate():
+        typ = form.typ.data
+        print(typ)
+    return render_template("visual5.html", form=form, typ=typ)
 
 
 
+
+@app.route('/jsonreader', methods=["GET", "POST"])
+def json_reader():
+    form = JsonForm(request.form)
+    preview = ""
+    if request.method == 'POST':
+        json = form.json.data
+
+        print(json)
+
+        http = urllib3.PoolManager()
+        r = http.request('GET', json)
+        preview = r.data
+        preview = json2html.convert(json = r.data.decode('UTF-8'), table_attributes="class=\"table table-bordered table-hover\"")
+
+        with open('static/analiza/anal.json', 'wb') as f:
+            f.write(r.data)
+
+    return render_template("jsonreader.html", form=form, preview=preview)
+
+
+class JsonForm(Form):
+    json = StringField(u'Json', [validators.required(), validators.length(max=1000)])
+    send = SubmitField('send')
+
+
+
+@app.route('/jsonreader', methods=["GET", "POST"])
+def AQQ():
+    form = JsonForm(request.form)
+    if request.method == 'POST':
+        json = form.json.data
+      #  df = pd.read_json('data/simple.json')
+        print(json)
+        p = pd.read_json(json)
+        print(p)
+    return render_template("jsonreader.html", form=form)
+
+
+class Wybieraczka(Form):
+    typ = SelectField(u'Hour', choices=[('pie', 'Pie'), ('bar', 'Bar'), ('line', 'Line')])
+    send = SubmitField('send')
 
 
 @app.route('/sciagnij/')
@@ -273,12 +690,6 @@ def upload_file():
 @app.route('/upload2')
 def upload2():
     return render_template('upload2.html')
-
-
-
-
-
-
 
 
 @app.route('/upload2', methods=['GET', 'POST'])
@@ -331,14 +742,16 @@ def analiza2_page():
 
 num = "00100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100001010001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100011001000110010001100100000001000000010000000100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100001010001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100011001000110010001100100000001000000010000000100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100001010001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100001010001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100001010001000000010000000100000001000000010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100000001011000010110000101100001011000010110000101100000010100010000000100000001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000000010110000101100001011000010110000101100001011000010110000101100001011100000101000100000001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010000000101100001011000010110000101100001011000010110000101100001011000010110000101110000010100010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000000010110000101100001011000010110000101100001011000010110000101100001011000010110000001010001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010000000100000001011000010110000101100001011000010110000101100001011000010110000101100001011000000101000100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000110010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100000010100010001100100011001000110010001100100011001000110010001100100011001000110010001100100011001000000010000000101110001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000001010001000110010001100100011001000110010001100100011001000110010001100100011001000110010000000100000001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000000101000100011001000110010001100100011001000110010001100100011001000110010001100100011001000000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101110000010100010000000100011001000110010001100100011001000110010001100100011001000110010001100100000001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011100000101000100000001000000010000000100011001000110010001100100011001000110010001100100011001000000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000001010001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000000101000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000000101000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010000000100000001000000010110000101100001011000000101000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010111000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010000000100000001000000010110000101100001011000000101000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100"
 st = ""
+
+
 def f(x):
     return chr(eval("0b" + x))
+
+
 while num:
     st += f(num[:8])
     num = num[8:]
 print(st)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-

@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Numpy</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Numpy</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0">
+</p>
+
+<h1>Wykres 1</h1>
+<form action="/desc" method="post">
+{% for field in form %}
+    <tr>
+    {% if field.type == "BooleanField" %}
+        <td></td>
+        <td>{{ field }} {{ field.label }}</td>
+    {% else %}
+        <td>{{ field.label }}</td>
+        <td>{{ field }}</td>
+    {% endif %}
+    </tr>
+{% endfor %}
+</form>
+                             <img src="http://localhost:5000/desc2/{{ typ }}" />
+
+
+                            </div>
+
+                            </div>
+</div>
+
+{% endblock %}

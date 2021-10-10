@@ -1,0 +1,46 @@
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                    {% for row in data2 %}
+                                        <tr>
+                                            <th>{{ row[0] }}</th>
+                                            <th>{{ row[1]}}</th>
+                                            <th>{{ row[2] }}</th>
+                                            <th>{{ row[3]}}</th>
+                                            <th>{{ row[4]}}</th>
+                                            <th>{{ row[5]}}</th>
+
+                                        </tr>
+                                    {% endfor %}
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Office</th>
+                                            <th>Age</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for row in data %}
+                                        <tr>
+                                            <td>{{ row[0] }}</td>
+                                            <td>{{ row[1]}}</td>
+                                            <td>{{ row[2] }}</td>
+                                            <td>{{ row[3]}}</td>
+                                            <td>{{ row[4]}}</td>
+                                            <td>{{ row[5]}}</td>
+
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>

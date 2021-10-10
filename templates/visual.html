@@ -14,8 +14,20 @@
 </p>
 
 <h1>Wykres 1</h1>
-
-                             <img src="http://localhost:5000/desc" />
+<form action="/esc" method="post">
+{% for field in form %}
+    <tr>
+    {% if field.type == "BooleanField" %}
+        <td></td>
+        <td>{{ field }} {{ field.label }}</td>
+    {% else %}
+        <td>{{ field.label }}</td>
+        <td>{{ field }}</td>
+    {% endif %}
+    </tr>
+{% endfor %}
+</form>
+                             <img src="http://localhost:5000/desc2/{{ typ }}" />
 
 
                             </div>
