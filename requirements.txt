@@ -32,3 +32,4 @@ WTForms~=2.3.3
 flask_wtf
 flask_session
 xlrd
+json2html

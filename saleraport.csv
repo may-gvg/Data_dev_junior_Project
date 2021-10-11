@@ -1,11 +1,11 @@
 apartamentk55;120;2021-09-11;2021-09-12;Świetlik;Sławomir;reception;K55;316;PLN;
 apartamentk55;129;2021-09-17;2021-09-18;Świetlik;Sławomir;reception;K55;272;PLN;
 apartamentk55;136;2021-09-24;2021-09-26;Milewicz;Anna;web;K55;404;PLN;
- kozubnikd15 ;100;2021-09-02;2021-09-05;Płachta;Olga;web;D15;560;PLN;
- kozubnikd15 ;107;2021-09-10;2021-09-12;Sitko;Jakub;booking;D15;460;PLN;
- kozubnikd15 ;112;2021-09-17;2021-09-19;Olek;Natalia;booking;D15;460;PLN;
- kozubnikd15 ;124;2021-09-24;2021-09-26;Niestrój;Arkadiusz;booking;D15;421,6;PLN;
- kozubnikd15 ;127;2021-09-14;2021-09-16;Strugała;Magdalena;booking;D15;460;PLN;
+;kozubnikd15;;100;2021-09-02;2021-09-05;Płachta;Olga;web;D15;560
+;kozubnikd15;;107;2021-09-10;2021-09-12;Sitko;Jakub;booking;D15;460
+;kozubnikd15;;112;2021-09-17;2021-09-19;Olek;Natalia;booking;D15;460
+;kozubnikd15;;124;2021-09-24;2021-09-26;Niestrój;Arkadiusz;booking;D15;421,6
+;kozubnikd15;;127;2021-09-14;2021-09-16;Strugała;Magdalena;booking;D15;460
 kozubnikd17;99;2021-09-03;2021-09-06;Sagan;Robert;reception;D17;660;PLN;
 kozubnikd17;114;2021-09-07;2021-09-12;Kawałkiewicz;Michał;booking;D17;1144;PLN;
 kozubnikd17;133;2021-09-24;2021-09-26;Cimala;Wiktoria;web;D17;404;PLN;
@@ -15,14 +15,14 @@ kozubnikd23;113;2021-09-10;2021-09-12;Kowalczyk;Emilia;web;D23;444;PLN;
 kozubnikd23;141;2021-10-08;2021-10-10;Zatorski;Waldemar;booking;D23;387,54;PLN;
 kozubnikd26;109;2021-09-18;2021-09-20;Wielgosz-Bartoszek;Eliza;booking;D26;541,6;PLN;
 kozubnikd26;132;2021-09-22;2021-09-26;Koszyka;Monika;booking;D26;942,4;PLN;
-kozubnikd26;145;2021-10-08;2021-10-11;Niedzielska - Korda;Barbara;booking;D26;597,2;PLN;
+kozubnikd26;145;2021-10-08;2021-10-11;Niedzielska;-0;Korda;Barbara;booking;D26;597,2
 kozubnikd32;115;2021-09-10;2021-09-12;Dittrich;Aleksandra;reception;D32;390;PLN;
 kozubnikd32;123;2021-09-12;2021-09-16;Laskowski;Grzegorz;booking;D32;780;PLN;
 kozubnikd32;128;2021-09-18;2021-09-20;Bryza;Szymon;booking;D32;460;PLN;
 kozubnikd32;130;2021-09-24;2021-09-26;Włodarczyk;Piotr;booking;D32;460;PLN;
 kozubnikd32;135;2021-09-26;2021-09-28;Salamonová;Zlatuše;booking;D32;495,2;PLN;
 kozubnikd32;147;2021-10-08;2021-10-10;Grzelczak;Łukasz;booking;D32;415,04;PLN;
-kozubnikd35;102;2021-09-02;2021-09-05;Krakowiak;Jacek ;web;D35;560;PLN;
+kozubnikd35;102;2021-09-02;2021-09-05;Krakowiak;Jacek;;web;D35;560;PLN
 kozubnikd35;108;2021-09-12;2021-09-17;Glura;Martyna;web;D35;840;PLN;
 kozubnikd35;116;2021-09-10;2021-09-12;Czarnota;Lukasz;booking;D35;504,8;PLN;
 kozubnikd35;122;2021-09-25;2021-09-29;Vondrovic;Václav;booking;D35;869,6;PLN;
