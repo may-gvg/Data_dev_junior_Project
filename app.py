@@ -98,6 +98,8 @@ def waluty():
 @app.route('/')
 def homepage():
     global df2
+  #  df2 = pd.read_excel('static/analiza/analiza.xls')
+
     df2 = pd.read_csv('static/analiza/analiza.csv')
     args = ""
     data = []
@@ -145,7 +147,7 @@ def homepage():
 cnx = sqlite3.connect('static/analiza/analiza.db')
 
 df2 = pd.read_csv('static/analiza/analiza.csv')
-# df2 = pd.read_excel('static/analiza/analiza.xls')
+#df2 = pd.read_excel('static/analiza/analiza.xls')
 # df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
 # rozładowałem sie sekunda
 
