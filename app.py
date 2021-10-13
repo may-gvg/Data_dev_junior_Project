@@ -105,8 +105,8 @@ def homepage():
 
     print("loader: " + loader)
 
-    if loader is "none":
-        loader = 'csv';
+    if loader == "none":
+        loader = 'csv'
 
     if loader == 'csv':
         df2 = pd.read_csv('static/analiza/analiza.csv')
@@ -206,8 +206,7 @@ def db_loader():
     return render_template("analiza2.html", args=args)
 
 
-cnx = sqlite3.connect('static/analiza/analiza.db')
-
+df2 = pd.read_csv('static/analiza/analiza.csv')
 
 
 # df2 = pd.read_excel('static/analiza/analiza.xls')
