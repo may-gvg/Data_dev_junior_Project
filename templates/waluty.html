@@ -2,44 +2,43 @@
 
 {% block content %}
 
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Ceny walut</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Ceny walut</li>
-                        </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <p class="mb-0">
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Ceny walut</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">Ceny walut</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="mb-0">
 
 
+                {% include 'output.html' %}
+            <p></p>
 
-                                {% include 'output.html' %}
-                                <p></p>
+            <form action="/waluty" name="przelicz" method="POST">
+                Chce kupić:
+                <select name="zczego">
+                    {%for option in options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                </select>
 
-<form action="/waluty" name="przelicz" method="POST">
-    Chce kupić:
-    <select name="zczego">
-        {%for option in options %}
-            <option value="{{ option }}">{{ option }}</option>
-        {% endfor %}
-    </select>
+                kwota
+                <input type="number" name="kwota" placeholder="Kwota" style="text-align:center;margin-right:5px;">
 
-    kwota
-    <input type="number" name="kwota" placeholder="Kwota" style="text-align:center;margin-right:5px;">
+                otrzymasz:
+                <input value="{{ wynik }}" type="number" id="wynik" placeholder="wynik" style="text-align:center"
+                       disabled> PLN
 
-    otrzymasz:
-    <input value="{{ wynik }}" type="number" id="wynik" placeholder="wynik" style="text-align:center" disabled> PLN
-
-    <input type="submit" value="przelicz walutę" onclick="przelicz();">
+                <input type="submit" value="przelicz walutę" onclick="przelicz();">
 
 
+            </form>
+        </div>
 
-    </form>
-   </div>
-
-   </div>
-   </div>
+    </div>
+</div>
 
 
 {% endblock %}

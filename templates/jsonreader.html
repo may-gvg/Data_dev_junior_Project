@@ -1,0 +1,38 @@
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">json loader</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">json loader</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="mb-0">
+            </p>
+
+
+<form action="/jsonreader" method="post">
+    {% for field in form %}
+    {% if field.type == "BooleanField" %}
+    {{ field }} {{ field.label }}
+    {% else %}
+    {{ field.label }}
+    {{ field }}
+    {% endif %}
+    {% endfor %}
+</form>
+        </div>
+{{ preview|safe }}
+</div>
+
+</div>
+
+
+
+
+{% endblock %}

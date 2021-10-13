@@ -3,18 +3,17 @@
 {% block content %}
 
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Column 1</h1>
+    <h1 class="mt-4">Column 5</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item active">Column 1</li>
+        <li class="breadcrumb-item active">Column 5</li>
     </ol>
     <div class="card mb-4">
         <div class="card-body">
             <p class="mb-0">
             </p>
 
-
-            <form action="/esc" method="post">
+            <form action="/esc4" method="post">
                 {% for field in form %}
                 {% if field.type == "BooleanField" %}
                 {{ field }} {{ field.label }}
@@ -25,10 +24,10 @@
                 {% endfor %}
             </form>
 
-
         </div>
 
-        <img src="http://localhost:5000/desc2/{{ typ }}"/>
+        <img src="http://localhost:5000/desc6/{{ typ }}"/>
+
 
     </div>
 </div>
