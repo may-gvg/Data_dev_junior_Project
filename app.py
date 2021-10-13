@@ -99,7 +99,26 @@ def waluty():
 @app.route('/')
 def homepage():
     global df2
-    df2 = pd.read_csv('static/analiza/analiza.csv')
+
+
+    loader = request.args.get('loader', "none")
+
+    print("loader: " + loader)
+
+    if loader == "none":
+        loader = 'csv'
+
+    if loader == 'csv':
+        df2 = pd.read_csv('static/analiza/analiza.csv')
+
+    if loader == 'xls':
+        print("loader: xls")
+        df2 = pd.read_excel('static/analiza/analiza.xls')
+
+    if loader == 'db':
+        cnx = sqlite3.connect('static/analiza/analiza.db')
+        df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
+
     args = ""
     data = []
     area_data = []
@@ -187,9 +206,9 @@ def db_loader():
     return render_template("analiza2.html", args=args)
 
 
-cnx = sqlite3.connect('static/analiza/analiza.db')
-
 df2 = pd.read_csv('static/analiza/analiza.csv')
+
+
 # df2 = pd.read_excel('static/analiza/analiza.xls')
 
 # df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
