@@ -2,16 +2,18 @@ import csv
 import io
 import os
 import sqlite3
-from flask import Flask, render_template, redirect, request, flash, send_file
-from flask_session import Session
-import requests
-import urllib3
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import requests
 import seaborn as sns
+import urllib3
+from flask import Flask, render_template, redirect, request, flash, send_file
 from json2html import *
 from werkzeug.utils import secure_filename
 from wtforms import StringField, Form, validators, SubmitField, SelectField
+
+from flask_session import Session
 
 UPLOAD_FOLDER = 'static/analiza'
 ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
@@ -87,7 +89,6 @@ def waluty():
             if waluta == currency:
                 wartosc = float(waluty[waluta])
                 print("Wartosc: " + str(wartosc))
-        przelicz = ""
         print("Kwota: " + str(money))
         print("currenty: " + currency)
         przelicz = str(round(money * wartosc, 3))
@@ -98,9 +99,26 @@ def waluty():
 @app.route('/')
 def homepage():
     global df2
-  #  df2 = pd.read_excel('static/analiza/analiza.xls')
 
-    df2 = pd.read_csv('static/analiza/analiza.csv')
+
+    loader = request.args.get('loader', "none")
+
+    print("loader: " + loader)
+
+    if loader is "none":
+        loader = 'csv';
+
+    if loader == 'csv':
+        df2 = pd.read_csv('static/analiza/analiza.csv')
+
+    if loader == 'xls':
+        print("loader: xls")
+        df2 = pd.read_excel('static/analiza/analiza.xls')
+
+    if loader == 'db':
+        cnx = sqlite3.connect('static/analiza/analiza.db')
+        df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
+
     args = ""
     data = []
     area_data = []
@@ -144,24 +162,73 @@ def homepage():
                            bar_labels=bar_labels.__str__())
 
 
+@app.route('/csvloader')
+def csv_loader():
+    df2 = pd.read_csv('static/analiza/analiza.csv')
+    data = df2.iloc[:, 0].value_counts()
+    data1 = df2.iloc[:, 1].value_counts()
+    data2 = df2.iloc[:, 2].value_counts()
+    data3 = df2.iloc[:, 3].value_counts()
+    data4 = df2.iloc[:, 4].value_counts()
+    data5 = df2.iloc[:, 5].value_counts()
+
+    args = ""
+    return render_template("analiza2.html", args=args)
+
+
+@app.route('/xlsloader')
+def xls_loader():
+    df2 = pd.read_excel('static/analiza/analiza.xls')
+    data = df2.iloc[:, 5].value_counts()
+    data1 = df2.iloc[:, 6].value_counts()
+    data2 = df2.iloc[:, 7].value_counts()
+    data3 = df2.iloc[:, 8].value_counts()
+    data4 = df2.iloc[:, 9].value_counts()
+    data5 = df2.iloc[:, 10].value_counts()
+
+    args = ""
+    return render_template("analiza2.html", args=args)
+
+
+@app.route('/dbloader')
+def db_loader():
+    cnx = sqlite3.connect('static/analiza/analiza.db')
+    df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
+    # wybór tabeli
+    data = df2.iloc[:, 5].value_counts()
+    data1 = df2.iloc[:, 6].value_counts()
+    data2 = df2.iloc[:, 7].value_counts()
+    data3 = df2.iloc[:, 8].value_counts()
+    data4 = df2.iloc[:, 9].value_counts()
+    data5 = df2.iloc[:, 10].value_counts()
+
+    args = ""
+    return render_template("analiza2.html", args=args)
+
+
 cnx = sqlite3.connect('static/analiza/analiza.db')
 
-df2 = pd.read_csv('static/analiza/analiza.csv')
-#df2 = pd.read_excel('static/analiza/analiza.xls')
+
+
+# df2 = pd.read_excel('static/analiza/analiza.xls')
+
 # df2 = pd.read_sql_query("SELECT * FROM flights", cnx)
-# rozładowałem sie sekunda
+# wybór tabeli
 
 
 # value counts data butony
-data = df2.iloc[:, 0].value_counts()
-data1 = df2.iloc[:, 1].value_counts()
-data2 = df2.iloc[:, 2].value_counts()
-data3 = df2.iloc[:, 3].value_counts()
-data4 = df2.iloc[:, 4].value_counts()
-data5 = df2.iloc[:, 5].value_counts()
+data = df2.iloc[:, 0].value_counts().sort_values(ascending=False).head(50)
+data1 = df2.iloc[:, 1].value_counts().sort_values(ascending=False).head(66)
+data2 = df2.iloc[:, 2].value_counts().sort_values(ascending=False).head(66)
+data3 = df2.iloc[:, 3].value_counts().sort_values(ascending=False).head(66)
+data4 = df2.iloc[:, 4].value_counts().sort_values(ascending=False).head(66)
+data5 = df2.iloc[:, 5].value_counts().sort_values(ascending=False).head(66)
 
 # describe data
 x = df2.describe()
+
+cmap = plt.get_cmap("Set2")
+colors = cmap(np.array([1, 2, 3, 4, 5, 6, 7]))
 
 
 @app.route('/analysis')
@@ -176,7 +243,7 @@ def do_plot():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 1')
+    plt.title('col 1 value count')
     sns.barplot(x=data.index, y=data, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -191,7 +258,7 @@ def do_plot1():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 2')
+    plt.title('col 1 value count')
     sns.lineplot(x=data.index, y=data, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -206,8 +273,9 @@ def do_plot2():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 3')
-    plt.pie(data, labels=data.index, autopct='%1.1f%%', startangle=150, shadow=True)
+    plt.title('col 1 value count')
+    plt.pie(data, labels=data.index, colors=colors, autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,
+            startangle=150, shadow=True)
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -223,7 +291,7 @@ def do_plot3():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 1')
+    plt.title('col 2 value count')
     sns.barplot(x=data1.index, y=data1, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -238,7 +306,7 @@ def do_plot4():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 2')
+    plt.title('col 2 value count')
     sns.lineplot(x=data1.index, y=data1, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -253,8 +321,9 @@ def do_plot5():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 3')
-    plt.pie(data1, labels=data1.index, autopct='%1.1f%%', startangle=150, shadow=True)
+    plt.title('col 2 value count')
+    plt.pie(data1, labels=data1.index, colors=colors, autopct='%1.1f%%', pctdistance=1.1, labeldistance=1.2,
+            startangle=150, shadow=True)
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -271,7 +340,7 @@ def do_plot6():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 1')
+    plt.title('col 3 value count')
     sns.barplot(x=data2.index, y=data2, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flask
@@ -286,7 +355,7 @@ def do_plot7():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 2')
+    plt.title('col 3 value count')
     sns.lineplot(x=data2.index, y=data2, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -301,8 +370,9 @@ def do_plot8():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 3')
-    plt.pie(data2, labels=data2.index, autopct='%1.1f%%', startangle=150, shadow=True)
+    plt.title('col 3 value count')
+    plt.pie(data2, labels=data2.index, autopct='%1.1f%%', colors=colors, pctdistance=1.1, labeldistance=1.2,
+            startangle=150, shadow=True)
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -318,7 +388,7 @@ def do_plot9():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 1')
+    plt.title('col 4 value count')
     sns.barplot(x=data3.index, y=data3, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -333,7 +403,7 @@ def do_plot10():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 2')
+    plt.title('col 4 value count')
     sns.lineplot(x=data3.index, y=data3, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -348,8 +418,9 @@ def do_plot11():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 3')
-    plt.pie(data3, labels=data3.index, autopct='%1.1f%%', startangle=150, shadow=True)
+    plt.title('col 4 value count')
+    plt.pie(data3, labels=data3.index, autopct='%1.1f%%', colors=colors, pctdistance=1.1, labeldistance=1.2,
+            startangle=150, shadow=True)
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -363,11 +434,9 @@ def do_plot11():
 def do_plot12():
     # bar
     # Loading
-
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 1')
+    plt.title('col 5 value count')
     sns.barplot(x=data4.index, y=data4, palette='Set2')
-
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
     plt.savefig(bytes_image, format='png')
@@ -378,11 +447,9 @@ def do_plot12():
 def do_plot13():
     # line
     # Loading
-
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 2')
+    plt.title('col 5 value count')
     sns.lineplot(x=data4.index, y=data4, palette='Set2')
-
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
     plt.savefig(bytes_image, format='png')
@@ -395,8 +462,9 @@ def do_plot14():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 3')
-    plt.pie(data4, labels=data4.index, autopct='%1.1f%%', startangle=150, shadow=True)
+    plt.title('col 5 value count')
+    plt.pie(data4, labels=data4.index, autopct='%1.1f%%', colors=colors, pctdistance=1.1, labeldistance=1.2,
+            startangle=150, shadow=True)
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -412,7 +480,7 @@ def do_plot15():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 1')
+    plt.title('col 6 value count')
     sns.barplot(x=data5.index, y=data5, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -427,7 +495,7 @@ def do_plot16():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 2')
+    plt.title('col 6 value count')
     sns.lineplot(x=data5.index, y=data5, palette='Set2')
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
@@ -442,8 +510,9 @@ def do_plot17():
     # Loading
 
     plt.figure(figsize=(12, 6))
-    plt.title('Wykres 3')
-    plt.pie(data5, labels=data5.index, autopct='%1.1f%%', startangle=150, shadow=True)
+    plt.title('col 6 value count')
+    plt.pie(data5, labels=data5.index, autopct='%1.1f%%', colors=colors, pctdistance=1.1, labeldistance=1.2,
+            startangle=150, shadow=True)
 
     # here is the trick save your figure into a bytes object and you can afterwards expose it via flas
     bytes_image = io.BytesIO()
@@ -453,11 +522,11 @@ def do_plot17():
 
 
 @app.route('/desc2/<typ>', methods=['GET'])
-def desc(typ="pie"):
-    if typ == 'pie':
-        bytes_obj = do_plot2()
+def desc(typ="bar"):
     if typ == 'bar':
         bytes_obj = do_plot()
+    if typ == 'pie':
+        bytes_obj = do_plot2()
     if typ == 'line':
         bytes_obj = do_plot1()
     # wybór do_plot albo do_plot1 albo do_plot2
@@ -467,11 +536,11 @@ def desc(typ="pie"):
 
 
 @app.route('/desc3/<typ>', methods=['GET'])
-def desc3(typ="pie"):
-    if typ == 'pie':
-        bytes_obj = do_plot5()
+def desc3(typ="bar"):
     if typ == 'bar':
         bytes_obj = do_plot3()
+    if typ == 'pie':
+        bytes_obj = do_plot5()
     if typ == 'line':
         bytes_obj = do_plot4()
     # wybór do_plot albo do_plot1 albo do_plot2
@@ -481,11 +550,11 @@ def desc3(typ="pie"):
 
 
 @app.route('/desc4/<typ>', methods=['GET'])
-def desc4(typ="pie"):
-    if typ == 'pie':
-        bytes_obj = do_plot8()
+def desc4(typ="bar"):
     if typ == 'bar':
         bytes_obj = do_plot6()
+    if typ == 'pie':
+        bytes_obj = do_plot8()
     if typ == 'line':
         bytes_obj = do_plot7()
     # wybór do_plot albo do_plot1 albo do_plot2
@@ -495,7 +564,9 @@ def desc4(typ="pie"):
 
 
 @app.route('/desc5/<typ>', methods=['GET'])
-def desc5(typ="pie"):
+def desc5(typ="bar"):
+    if typ == 'bar':
+        bytes_obj = do_plot9()
     if typ == 'pie':
         bytes_obj = do_plot11()
     if typ == 'bar':
@@ -509,13 +580,13 @@ def desc5(typ="pie"):
 
 
 @app.route('/desc6/<typ>', methods=['GET'])
-def desc6(typ="pie"):
+def desc6(typ="bar"):
+    if typ == 'bar':
+        bytes_obj = do_plot12()
     if typ == 'pie':
         bytes_obj = do_plot14()
-    if typ == 'bar':
-        bytes_obj = do_plot13()
     if typ == 'line':
-        bytes_obj = do_plot12()
+        bytes_obj = do_plot13()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
                      attachment_filename='plot.png',
@@ -523,11 +594,11 @@ def desc6(typ="pie"):
 
 
 @app.route('/desc7/<typ>', methods=['GET'])
-def desc7(typ="pie"):
-    if typ == 'pie':
-        bytes_obj = do_plot17()
+def desc7(typ="bar"):
     if typ == 'bar':
         bytes_obj = do_plot15()
+    if typ == 'pie':
+        bytes_obj = do_plot17()
     if typ == 'line':
         bytes_obj = do_plot16()
     # wybór do_plot albo do_plot1 albo do_plot2
@@ -540,7 +611,7 @@ def desc7(typ="pie"):
 @app.route('/esc', methods=["GET", "POST"])
 def desca():
     form = Wybieraczka(request.form)
-    typ = 'pie'
+    typ = 'bar'
 
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
@@ -552,7 +623,7 @@ def desca():
 @app.route('/esc1', methods=["GET", "POST"])
 def desca1():
     form = Wybieraczka(request.form)
-    typ = 'pie'
+    typ = 'bar'
 
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
@@ -564,7 +635,7 @@ def desca1():
 @app.route('/esc2', methods=["GET", "POST"])
 def desca2():
     form = Wybieraczka(request.form)
-    typ = 'pie'
+    typ = 'bar'
 
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
@@ -575,9 +646,8 @@ def desca2():
 # kolumna 4
 @app.route('/esc3', methods=["GET", "POST"])
 def desca3():
-
     form = Wybieraczka(request.form)
-    typ = 'pie'
+    typ = 'bar'
 
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
@@ -589,7 +659,7 @@ def desca3():
 @app.route('/esc4', methods=["GET", "POST"])
 def desca4():
     form = Wybieraczka(request.form)
-    typ = 'pie'
+    typ = 'bar'
 
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
@@ -601,7 +671,7 @@ def desca4():
 @app.route('/esc5', methods=["GET", "POST"])
 def desca5():
     form = Wybieraczka(request.form)
-    typ = 'pie'
+    typ = 'bar'
 
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
@@ -615,23 +685,19 @@ def json_reader():
     preview = ""
     if request.method == 'POST':
         json = form.json.data
-
         print(json)
-
         http = urllib3.PoolManager()
         r = http.request('GET', json)
         preview = r.data
         preview = json2html.convert(json=r.data.decode('UTF-8'),
                                     table_attributes="class=\"table table-bordered table-hover\"")
-
         with open('static/analiza/anal.json', 'wb') as f:
             f.write(r.data)
-
     return render_template("jsonreader.html", form=form, preview=preview)
 
 
 class JsonForm(Form):
-    json = StringField(u'Json', [validators.required(), validators.length(max=1000)])
+    json = StringField('json url:', [validators. InputRequired(), validators.length(max=1000)])
     send = SubmitField('send')
 
 
@@ -648,8 +714,8 @@ def AQQ():
 
 
 class Wybieraczka(Form):
-    typ = SelectField(u'Hour', choices=[('pie', 'Pie'), ('bar', 'Bar'), ('line', 'Line')])
-    send = SubmitField('send')
+    typ = SelectField('type:', choices=[('bar', 'Bar'), ('pie', 'Pie'), ('line', 'Line')])
+    send = SubmitField("plot")
 
 
 @app.route('/sciagnij/')
