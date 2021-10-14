@@ -42,21 +42,6 @@
                 </div>
             </div>
         </div>
-
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body">Load your notebook.html</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/upload2">upload analiza or analiza2.html</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-
-
-                </div>
-            </div>
-        </div>
-
-
     </div>
     <div class="row">
         {% with messages = get_flashed_messages() %}
@@ -75,45 +60,9 @@
         {% include 'areachart.html' %}
 
     </div>
+
+
     <div class="row">
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">csv loader</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/?loader=csv">plot csv</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">xls loader</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/?loader=xls">plot xls</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">Db loader</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/?loader=db">choose table, plot db</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">Column 1</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="/esc">column 1 details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
 
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
@@ -124,8 +73,40 @@
                 </div>
             </div>
         </div>
+
+
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
+                <div class="card-body">csv loader</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="/?loader=csv">plot csv</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">xls loader</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="/?loader=xls">plot xls</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">db loader</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="/?loader=db">choose table, plot db</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
                 <div class="card-body">Data - statistic</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/analysis">table stat details</a>
@@ -133,8 +114,17 @@
                 </div>
             </div>
         </div>
+    </div>
+    {% include 'csv.html' %}
+    <!-- csv -->
+
+</div>
+
+<div class="container-fluid px-4">
+
+ <div class="row">
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
+            <div class="card bg-primary text-white mb-4">
                 <div class="card-body">Column 1</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/esc">column 1 details</a>
@@ -142,28 +132,30 @@
                 </div>
             </div>
         </div>
+
+
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
+            <div class="card bg-warning text-white mb-4">
                 <div class="card-body">Column 2</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/esc1">column 2 details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-
-
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
+            <div class="card bg-success text-white mb-4">
                 <div class="card-body">Column 3</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/esc2">column 3 details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+
+
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
+            <div class="card bg-danger text-white mb-4">
                 <div class="card-body">Column 4</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/esc3">column 4 details</a>
@@ -172,7 +164,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
+            <div class="card bg-primary text-white mb-4">
                 <div class="card-body">Column 5</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/esc4">column 5 details</a>
@@ -181,23 +173,15 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
+            <div class="card bg-warning text-white mb-4">
                 <div class="card-body">Column 6</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="/esc5">column 6 details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-
-
                 </div>
             </div>
         </div>
-    </div>
 
-    {% include 'csv.html' %}
-    <!-- csv -->
-
-
-</div>
-
-
+ </div>
+ </div>
 {% endblock %}

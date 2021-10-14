@@ -3,23 +3,29 @@
 {% block content %}
 
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Numpy</h1>
+    <h1 class="mt-4">Table statistic</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item active">Numpy</li>
+        <li class="breadcrumb-item active">Table statistic</li>
     </ol>
     <div class="card mb-4">
         <div class="card-body">
             <p class="mb-0">
             </p>
-
-            <h1>Describe</h1>
+<div class="table">
+            <h3>Describe</h3>
             {{data7 | safe}}
-
-            <p></p>
-            {{data8 | safe}}
-
+</div>
+<div class="table">
+    <h3>Median</h3>
+            {{data9 | safe}}
+            </div>
+<div class="table">
+              <h3>Mode</h3>
+                {{data8 | safe}}
+                    </div>
         </div>
+
 
     </div>
 </div>

@@ -97,30 +97,25 @@ def waluty():
 
 def nice_loader(loader):
     global df2, data, data1, data2, data3, data4, data5
-
     if loader == 'csv':
         df2 = pd.read_csv('static/analiza/analiza.csv')
-
     if loader == 'xls':
         df2 = pd.read_excel('static/analiza/analiza.xls')
     if loader == 'db':
         cnx = sqlite3.connect('static/analiza/analiza.db')
         df2 = pd.read_sql_query("SELECT * FROM courthouse_security_logs", cnx)
-
     data = df2.iloc[:, 0].value_counts().sort_values(ascending=False).head(50)
-    data1 = df2.iloc[:, 1].value_counts().sort_values(ascending=False).head(66)
-    data2 = df2.iloc[:, 2].value_counts().sort_values(ascending=False).head(66)
-    data3 = df2.iloc[:, 3].value_counts().sort_values(ascending=False).head(66)
-    data4 = df2.iloc[:, 4].value_counts().sort_values(ascending=False).head(66)
-    # data5 = df2.iloc[:, 5].value_counts().sort_values(ascending=False).head(66)
+    data1 = df2.iloc[:, 1].value_counts().sort_values(ascending=False).head(50)
+    data2 = df2.iloc[:, 2].value_counts().sort_values(ascending=False).head(50)
+    data3 = df2.iloc[:, 3].value_counts().sort_values(ascending=False).head(50)
+    data4 = df2.iloc[:, 4].value_counts().sort_values(ascending=False).head(50)
+    data5 = df2.iloc[:, 5].value_counts().sort_values(ascending=False).head(50)
 
 
 @app.route('/')
 def homepage():
     global df2
-
     loader = request.args.get('loader', "none")
-
     if loader == "none":
         loader2 = session.get('loader')
         if not loader2:
@@ -129,12 +124,14 @@ def homepage():
             loader = loader2
     session['loader'] = loader
     nice_loader(loader)
+
     args = ""
     data = []
     area_data = []
     bar_data = []
     area_labels = []
     bar_labels = []
+
     waluty = read_csv()
     for waluta in waluty:
         wartosc = float(waluty[waluta])
@@ -142,6 +139,7 @@ def homepage():
         bar_data.append(wartosc)
         area_labels.append(waluta)
         bar_labels.append(waluta)
+
     with open('static/analiza/analiza.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         c = 1
@@ -150,18 +148,21 @@ def homepage():
                 c += 1
                 continue
             data.append(row)
+
     data2 = []
     with open('static/analiza/analiza.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             data2.append(row)
             break
+
     data3 = []
     for index, row in df2.iterrows():
         l = []
         for i in range(0, row.size):
             l.append(row[i])
         data3.append(l)
+
     data4 = []
     for c in df2.keys():
         data4.append(c)
@@ -183,7 +184,13 @@ def analysis():
         loader = 'csv'
     nice_loader(loader)
     x = df2.describe()
-    return render_template("analysis.html", data7=x.to_html())
+    y = df2.mode()
+    z = df2.median(numeric_only=True)
+    z = pd.DataFrame(z)
+    return render_template("analysis.html", data7=x.to_html(), data8=y.to_html(), data9=z.to_html())
+
+
+
 
 
 # kolumna 1
@@ -453,7 +460,7 @@ def desc(typ="bar"):
         bytes_obj = do_plot1()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
-                     attachment_filename='plot.png',
+                     download_name='plot.png',
                      mimetype='image/png')
 
 
@@ -467,7 +474,7 @@ def desc3(typ="bar"):
         bytes_obj = do_plot4()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
-                     attachment_filename='plot.png',
+                     download_name='plot.png',
                      mimetype='image/png')
 
 
@@ -481,7 +488,7 @@ def desc4(typ="bar"):
         bytes_obj = do_plot7()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
-                     attachment_filename='plot.png',
+                     download_name='plot.png',
                      mimetype='image/png')
 
 
@@ -497,7 +504,7 @@ def desc5(typ="bar"):
         bytes_obj = do_plot10()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
-                     attachment_filename='plot.png',
+                     download_name='plot.png',
                      mimetype='image/png')
 
 
@@ -511,7 +518,7 @@ def desc6(typ="bar"):
         bytes_obj = do_plot13()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
-                     attachment_filename='plot.png',
+                     download_name='plot.png',
                      mimetype='image/png')
 
 
@@ -525,7 +532,7 @@ def desc7(typ="bar"):
         bytes_obj = do_plot16()
     # wybór do_plot albo do_plot1 albo do_plot2
     return send_file(bytes_obj,
-                     attachment_filename='plot.png',
+                     download_name='plot.png',
                      mimetype='image/png')
 
 
@@ -545,7 +552,6 @@ def desca():
 def desca1():
     form = Wybieraczka(request.form)
     typ = 'bar'
-
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
         print(typ)
@@ -557,7 +563,6 @@ def desca1():
 def desca2():
     form = Wybieraczka(request.form)
     typ = 'bar'
-
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
         print(typ)
@@ -569,7 +574,6 @@ def desca2():
 def desca3():
     form = Wybieraczka(request.form)
     typ = 'bar'
-
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
         print(typ)
@@ -581,7 +585,6 @@ def desca3():
 def desca4():
     form = Wybieraczka(request.form)
     typ = 'bar'
-
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
         print(typ)
@@ -593,7 +596,6 @@ def desca4():
 def desca5():
     form = Wybieraczka(request.form)
     typ = 'bar'
-
     if request.method == 'POST' and form.validate():
         typ = form.typ.data
         print(typ)
@@ -642,7 +644,7 @@ class Wybieraczka(Form):
 def plot_csv():
     return send_file('static/analiza/output.csv',
                      mimetype='text/csv',
-                     attachment_filename='output.csv',
+                     download_name='output.csv',
                      as_attachment=True)
 
 
@@ -674,29 +676,6 @@ def upload_file():
         return redirect("/")
 
 
-@app.route('/upload2')
-def upload2():
-    return render_template('upload2.html')
-
-
-@app.route('/upload2', methods=['GET', 'POST'])
-def upload_file2():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect("/")
-        flash("Wrong filename extension")
-        return redirect("/")
-
-
 @app.route('/numpy')
 def numpy_page():
     args = ""
@@ -707,6 +686,12 @@ def numpy_page():
 def pandas_page():
     args = ""
     return render_template("pandas.html", args=args)
+
+
+@app.route('/pyspark')
+def pyspark_page():
+    args = ""
+    return render_template("pyspark.html", args=args)
 
 
 @app.route('/flask')
