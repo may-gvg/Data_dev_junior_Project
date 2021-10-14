@@ -184,17 +184,13 @@ def analysis():
         loader = 'csv'
     nice_loader(loader)
     x = df2.describe()
-    y = df2.mode()
     z = df2.median(numeric_only=True)
     z = pd.DataFrame(z)
+    y = df2.mode().head(3)
     return render_template("analysis.html", data7=x.to_html(), data8=y.to_html(), data9=z.to_html())
 
 
-
-
-
 # kolumna 1
-
 def do_plot():
     # bar
     # Loading
