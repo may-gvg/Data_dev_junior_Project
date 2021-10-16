@@ -17,7 +17,7 @@ from flask_session import Session
 
 UPLOAD_FOLDER = 'static/analiza'
 ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
-
+#123
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
