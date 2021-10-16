@@ -138,9 +138,9 @@ dmypy.json
 cython_debug/
 
 .idea
-.ipynb_checkpoints
-Analiza
-flask_session
+.ipynb_checkpoints/
+
+flask_session/
 startbootstrap-bare-gh-pages
 startbootstrap-sb-admin
 slonie.py
