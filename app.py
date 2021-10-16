@@ -191,6 +191,7 @@ def analysis():
 
 
 # kolumna 1
+
 def do_plot():
     # bar
     # Loading
