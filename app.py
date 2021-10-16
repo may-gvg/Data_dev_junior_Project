@@ -15,7 +15,7 @@ from wtforms import StringField, Form, validators, SubmitField, SelectField
 
 from flask_session import Session
 
-#lsjfsdljflsdjfsdljfsdljf
+
 UPLOAD_FOLDER = 'static/analiza'
 ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
 
@@ -104,27 +104,39 @@ def nice_loader(loader):
         df2 = pd.read_excel('static/analiza/analiza.xls')
     if loader == 'db':
         cnx = sqlite3.connect('static/analiza/analiza.db')
-        df2 = pd.read_sql_query("SELECT * FROM courthouse_security_logs", cnx)
-    data = df2.iloc[:, 0].value_counts().sort_values(ascending=False).head(50)
-    data1 = df2.iloc[:, 1].value_counts().sort_values(ascending=False).head(50)
-    data2 = df2.iloc[:, 2].value_counts().sort_values(ascending=False).head(50)
-    data3 = df2.iloc[:, 3].value_counts().sort_values(ascending=False).head(50)
-    data4 = df2.iloc[:, 4].value_counts().sort_values(ascending=False).head(50)
-    data5 = df2.iloc[:, 5].value_counts().sort_values(ascending=False).head(50)
+        df2 = pd.read_sql_query("SELECT * FROM " + session['tabela'], cnx)
+
+    columns = len(df2.columns)
+
+    for i in range(0, columns):
+        suffix = str(i)
+        if i == 0:
+            suffix = ""
+        globals()['data' + suffix] = df2.iloc[:, i].value_counts().sort_values(ascending=False).head(50)
 
 
-@app.route('/')
+@app.route('/', methods = ["GET", "POST"])
 def homepage():
     global df2
-    loader = request.args.get('loader', "none")
-    if loader == "none":
-        loader2 = session.get('loader')
-        if not loader2:
-            loader = 'csv'
-        else:
-            loader = loader2
-    session['loader'] = loader
-    nice_loader(loader)
+
+    if request.method == 'GET':
+        loader = request.args.get('loader', "none")
+        if loader == "none":
+            loader2 = session.get('loader')
+            if not loader2:
+                loader = 'csv'
+            else:
+                loader = loader2
+        session['loader'] = loader
+        nice_loader(loader)
+
+    if request.method == 'POST':
+        tabela = request.form.get('tabela')
+        session['tabela'] = tabela
+        loader = 'db'
+        session['loader'] = loader
+        nice_loader(loader)
+        pass
 
     args = ""
     data = []
@@ -534,6 +546,12 @@ def desc7(typ="bar"):
                      mimetype='image/png')
 
 
+@app.route("/dbselect")
+def dbselect():
+    form = WybieraczkaDb(request.form)
+    return render_template("dbselect.html", form=form)
+
+
 # kolumna 1
 @app.route('/esc', methods=["GET", "POST"])
 def desca():
@@ -636,6 +654,20 @@ def aqq():
 class Wybieraczka(Form):
     typ = SelectField('type:', choices=[('bar', 'Bar'), ('pie', 'Pie'), ('line', 'Line')])
     send = SubmitField("plot")
+
+class WybieraczkaDb(Form):
+    tabele = []
+
+    cnx = sqlite3.connect('static/analiza/analiza.db')
+    cur = cnx.cursor()
+    cur.execute("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';")
+    rows = cur.fetchall()
+    for row in rows:
+        tabele.append((row[0], row[0]))
+
+
+    tabela = SelectField('tablea:', choices=tabele)
+    send = SubmitField("wybierz")
 
 
 @app.route('/sciagnij/')
