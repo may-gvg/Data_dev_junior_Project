@@ -15,6 +15,8 @@ from wtforms import StringField, Form, validators, SubmitField, SelectField
 
 from flask_session import Session
 
+#check
+
 UPLOAD_FOLDER = 'static/analiza'
 ALLOWED_EXTENSIONS = {'html', 'csv', 'db', 'xls', 'xlsx', 'json'}
 
