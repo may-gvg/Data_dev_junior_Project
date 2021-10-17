@@ -105,14 +105,12 @@ def nice_loader(loader):
     if loader == 'db':
         cnx = sqlite3.connect('static/analiza/analiza.db')
         df2 = pd.read_sql_query("SELECT * FROM " + session['tabela'], cnx)
-
-    columns = len(df2.columns)
-
-    for i in range(0, columns):
-        suffix = str(i)
-        if i == 0:
-            suffix = ""
-        globals()['data' + suffix] = df2.iloc[:, i].value_counts().sort_values(ascending=False).head(50)
+    data = df2.iloc[:, 0].value_counts().sort_values(ascending=False).head(50)
+    data1 = df2.iloc[:, 1].value_counts().sort_values(ascending=False).head(50)
+    data2 = df2.iloc[:, 2].value_counts().sort_values(ascending=False).head(50)
+    data3 = df2.iloc[:, 3].value_counts().sort_values(ascending=False).head(50)
+    data4 = df2.iloc[:, 4].value_counts().sort_values(ascending=False).head(50)
+    data5 = df2.iloc[:, 5].value_counts().sort_values(ascending=False).head(50)
 
 
 @app.route('/', methods = ["GET", "POST"])
@@ -550,7 +548,6 @@ def desc7(typ="bar"):
 def dbselect():
     form = WybieraczkaDb(request.form)
     return render_template("dbselect.html", form=form)
-
 
 # kolumna 1
 @app.route('/esc', methods=["GET", "POST"])
