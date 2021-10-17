@@ -97,6 +97,8 @@ def waluty():
 
 
 def nice_loader(loader):
+    max_columns = 5
+
     global df2, data, data1, data2, data3, data4, data5
     if loader == 'csv':
         df2 = pd.read_csv('static/analiza/analiza.csv')
@@ -105,15 +107,23 @@ def nice_loader(loader):
     if loader == 'db':
         cnx = sqlite3.connect('static/analiza/analiza.db')
         df2 = pd.read_sql_query("SELECT * FROM " + session['tabela'], cnx)
-    data = df2.iloc[:, 0].value_counts().sort_values(ascending=False).head(50)
-    data1 = df2.iloc[:, 1].value_counts().sort_values(ascending=False).head(50)
-    data2 = df2.iloc[:, 2].value_counts().sort_values(ascending=False).head(50)
-    data3 = df2.iloc[:, 3].value_counts().sort_values(ascending=False).head(50)
-    data4 = df2.iloc[:, 4].value_counts().sort_values(ascending=False).head(50)
-    data5 = df2.iloc[:, 5].value_counts().sort_values(ascending=False).head(50)
 
+    columns = len(df2.columns)
 
-@app.route('/', methods = ["GET", "POST"])
+    for i in range(0, columns):
+        suffix = str(i)
+        if i == 0:
+            suffix = ""
+        globals()['data' + suffix] = df2.iloc[:, i].value_counts().sort_values(ascending=False).head(50)
+
+    if columns < max_columns:
+        for i in range(columns, max_columns + 1):
+            suffix = str(i)
+            null = [{'a': 1}]
+            df = pd.DataFrame(null)
+            globals()['data' + suffix] = df.iloc[:, 0].value_counts().sort_values(ascending=False).head(50)
+
+@app.route('/', methods=["GET", "POST"])
 def homepage():
     global df2
 
