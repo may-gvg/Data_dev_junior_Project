@@ -208,7 +208,7 @@ def analysis():
     z = df2.median(numeric_only=True)
     z = pd.DataFrame(z)
     y = df2.mode().head(3)
-    return render_template("analysis.html", data7=x.to_html(), data8=y.to_html(), data9=z.to_html())
+    return render_template("analysis.html", data7=x.to_html().replace("dataframe", "dataTable-table"), data8=y.to_html().replace("dataframe", "dataTable-table"), data9=z.to_html().replace("dataframe", "dataTable-table"))
 
 
 # kolumna 1
