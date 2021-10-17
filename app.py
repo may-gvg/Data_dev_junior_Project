@@ -665,8 +665,10 @@ class Wybieraczka(Form):
 class WybieraczkaDb(Form):
     tabele = []
 
-    cnx = sqlite3.connect(app.instance_path + '/static/analiza/analiza.db')
+    cnx = sqlite3.connect(":memory:") # (app.root_path + '/static/analiza/analiza.db')
     cur = cnx.cursor()
+    cur.execute("CREATE TABLE people (id INTEGER,name TEXT,phone_number TEXT,passport_number INTEGER,license_plate TEXT,PRIMARY KEY(id))")
+    cur.execute("INSERT INTO people VALUES(810563,'Gary',NULL,6038029185,'S5EI3B0');")
     cur.execute("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';")
     rows = cur.fetchall()
     for row in rows:
