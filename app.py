@@ -667,7 +667,7 @@ class WybieraczkaDb(Form):
 
     cnx = sqlite3.connect(app.root_path + '/static/analiza/analiza.db')
     cur = cnx.cursor()
-    cur.execute("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';")
+    cur.execute("SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%';")
     rows = cur.fetchall()
     for row in rows:
         tabele.append((row[0], row[0]))
